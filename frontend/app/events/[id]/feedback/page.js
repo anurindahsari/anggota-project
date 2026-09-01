@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../../../lib/api';
 import { useAuthGuard } from '../../../../lib/useAuthGuard';
+import Header from '../../../../components/Header';
 
 export default function FeedbackPage() {
   const ready = useAuthGuard();
@@ -17,12 +18,8 @@ export default function FeedbackPage() {
     e.preventDefault();
     setError('');
     if (rating === 0) return setError('Pilih dulu ratingnya.');
-
     try {
-      await apiFetch(`/events/${id}/feedback`, {
-        method: 'POST',
-        body: JSON.stringify({ rating, comment }),
-      });
+      await apiFetch(`/events/${id}/feedback`, { method: 'POST', body: JSON.stringify({ rating, comment }) });
       setSent(true);
     } catch (err) {
       setError(err.message);
@@ -33,49 +30,36 @@ export default function FeedbackPage() {
 
   if (sent) {
     return (
-      <div style={{ maxWidth: 360, margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
-        <p>Terima kasih atas feedback-nya.</p>
+      <div className="page text-center" style={{ paddingTop: 80 }}>
+        <Header />
+        <p style={{ fontSize: 15 }}>Terima kasih atas feedback-nya.</p>
       </div>
     );
   }
 
   return (
-    <div style={{ maxWidth: 360, margin: '4rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 18, fontWeight: 500 }}>Gimana acaranya?</h1>
+    <div className="page" style={{ paddingTop: 64 }}>
+      <Header />
+      <h1 className="page-title">Gimana acaranya?</h1>
+      <p className="page-subtitle">Ceritakan pengalaman kamu, membantu kami untuk acara berikutnya.</p>
 
       <form onSubmit={handleSubmit}>
-        <div style={{ display: 'flex', gap: 6, justifyContent: 'center', margin: '16px 0' }}>
+        <div className="row" style={{ justifyContent: 'center', gap: 6, marginBottom: 20 }}>
           {[1, 2, 3, 4, 5].map((n) => (
-            <button
-              key={n}
-              type="button"
-              onClick={() => setRating(n)}
-              style={{
-                fontSize: 24,
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                color: n <= rating ? '#f5a623' : '#ccc',
-              }}
-              aria-label={`${n} bintang`}
-            >
-              ★
-            </button>
+            <button key={n} type="button" onClick={() => setRating(n)}
+              style={{ fontSize: 28, background: 'none', border: 'none', cursor: 'pointer', color: n <= rating ? 'var(--brand)' : 'var(--border-strong)', padding: 2 }}
+              aria-label={`${n} bintang`}>★</button>
           ))}
         </div>
 
-        <label style={{ fontSize: 13, color: '#666' }}>Catatan (opsional)</label>
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          rows={3}
-          placeholder="Ceritain pengalaman kamu"
-          style={{ width: '100%', margin: '6px 0 16px', boxSizing: 'border-box', padding: 8 }}
-        />
+        <div className="field">
+          <label className="label" htmlFor="comment">Catatan (opsional)</label>
+          <textarea id="comment" className="input" rows={3} placeholder="Ceritain pengalaman kamu"
+            value={comment} onChange={(e) => setComment(e.target.value)} />
+        </div>
 
-        {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
-
-        <button type="submit" style={{ width: '100%', padding: 10 }}>Kirim feedback</button>
+        {error && <div className="alert alert-danger">{error}</div>}
+        <button type="submit" className="btn btn-primary btn-full">Kirim feedback</button>
       </form>
     </div>
   );

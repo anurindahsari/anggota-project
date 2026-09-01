@@ -3,11 +3,8 @@
 import { useState } from 'react';
 import { apiFetch } from '../../lib/api';
 import { useAuthGuard } from '../../lib/useAuthGuard';
+import Header from '../../components/Header';
 
-// Catatan: ini pakai input manual kode QR, bukan scan kamera langsung.
-// Paling praktis dipasangkan dengan aplikasi scanner QR bawaan HP panitia,
-// yang otomatis ngisi field ini (banyak scanner HP bisa "kirim ke aplikasi lain").
-// Kalau mau scan kamera native di browser, bisa tambah library seperti html5-qrcode.
 export default function CheckinPage() {
   const ready = useAuthGuard();
   const [qrCode, setQrCode] = useState('');
@@ -17,55 +14,35 @@ export default function CheckinPage() {
 
   async function handleCheckin(e) {
     e.preventDefault();
-    setError('');
-    setResult('');
+    setError(''); setResult('');
     if (!qrCode.trim()) return setError('Kode QR wajib diisi.');
-
     setLoading(true);
     try {
-      const data = await apiFetch('/events/checkin', {
-        method: 'POST',
-        body: JSON.stringify({ qrCode }),
-      });
+      const data = await apiFetch('/events/checkin', { method: 'POST', body: JSON.stringify({ qrCode }) });
       setResult(data.message);
       setQrCode('');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { setError(err.message); }
+    finally { setLoading(false); }
   }
 
   if (!ready) return null;
 
   return (
-    <div style={{ maxWidth: 400, margin: '2rem auto', padding: '0 1rem', textAlign: 'center' }}>
-      <h1 style={{ fontSize: 18, fontWeight: 500 }}>Check-in peserta</h1>
+    <div className="page text-center" style={{ paddingTop: 48 }}>
+      <div style={{ display: 'inline-block' }}><Header /></div>
+      <h1 className="page-title">Check-in peserta</h1>
+      <p className="page-subtitle">Scan atau ketik kode QR tiket anggota.</p>
 
-      <form onSubmit={handleCheckin} style={{ marginTop: 16 }}>
-        <input
-          autoFocus
-          type="text"
-          placeholder="Scan atau ketik kode QR"
-          value={qrCode}
-          onChange={(e) => setQrCode(e.target.value)}
-          style={{ width: '100%', padding: 10, boxSizing: 'border-box', fontSize: 16 }}
-        />
-        <button disabled={loading} type="submit" style={{ width: '100%', padding: 10, marginTop: 10 }}>
+      <form onSubmit={handleCheckin}>
+        <input autoFocus className="input" type="text" placeholder="Scan atau ketik kode QR"
+          value={qrCode} onChange={(e) => setQrCode(e.target.value)} style={{ fontSize: 16, marginBottom: 12 }} />
+        <button disabled={loading} type="submit" className="btn btn-primary btn-full">
           {loading ? 'Memproses...' : 'Check-in'}
         </button>
       </form>
 
-      {result && (
-        <p style={{ marginTop: 16, padding: 12, background: '#e6f4ea', color: '#1e7e34', borderRadius: 8 }}>
-          {result}
-        </p>
-      )}
-      {error && (
-        <p style={{ marginTop: 16, padding: 12, background: '#fdecea', color: '#c0392b', borderRadius: 8 }}>
-          {error}
-        </p>
-      )}
+      {result && <div className="alert alert-success mt-24">{result}</div>}
+      {error && <div className="alert alert-danger mt-24">{error}</div>}
     </div>
   );
 }

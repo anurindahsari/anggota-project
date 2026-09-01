@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiFetch, setToken } from '../../lib/api';
+import Header from '../../components/Header';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [step, setStep] = useState('phone'); // 'phone' | 'otp'
+  const [step, setStep] = useState('phone');
   const [phone, setPhone] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -16,7 +17,6 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     if (!phone.trim()) return setError('Nomor WhatsApp wajib diisi.');
-
     setLoading(true);
     try {
       await apiFetch('/auth/request-otp', { method: 'POST', body: JSON.stringify({ phone }) });
@@ -32,13 +32,9 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     if (!code.trim()) return setError('Kode OTP wajib diisi.');
-
     setLoading(true);
     try {
-      const data = await apiFetch('/auth/verify-otp', {
-        method: 'POST',
-        body: JSON.stringify({ phone, code }),
-      });
+      const data = await apiFetch('/auth/verify-otp', { method: 'POST', body: JSON.stringify({ phone, code }) });
       setToken(data.token);
       router.push('/dashboard');
     } catch (err) {
@@ -49,21 +45,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ maxWidth: 360, margin: '4rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 20, fontWeight: 500 }}>Masuk akun anggota</h1>
+    <div className="page" style={{ paddingTop: 64 }}>
+      <Header />
+      <h1 className="page-title">Masuk akun</h1>
+      <p className="page-subtitle">
+        {step === 'phone' ? 'Pakai nomor WhatsApp yang terdaftar sebagai anggota.' : `Kode terkirim ke ${phone}`}
+      </p>
 
       {step === 'phone' && (
         <form onSubmit={handleRequestOtp}>
-          <label style={{ fontSize: 13, color: '#666' }}>Nomor WhatsApp</label>
-          <input
-            type="text"
-            placeholder="0812xxxxxxx"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-            style={{ width: '100%', margin: '6px 0 16px', boxSizing: 'border-box', padding: 8 }}
-          />
-          {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
-          <button disabled={loading} type="submit" style={{ width: '100%', padding: 10 }}>
+          <div className="field">
+            <label className="label" htmlFor="phone">Nomor WhatsApp</label>
+            <input id="phone" className="input" type="text" placeholder="0812xxxxxxx"
+              value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </div>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <button disabled={loading} className="btn btn-primary btn-full" type="submit">
             {loading ? 'Mengirim...' : 'Kirim kode OTP'}
           </button>
         </form>
@@ -71,17 +68,13 @@ export default function LoginPage() {
 
       {step === 'otp' && (
         <form onSubmit={handleVerifyOtp}>
-          <p style={{ fontSize: 13, color: '#666' }}>Kode dikirim ke {phone}</p>
-          <label style={{ fontSize: 13, color: '#666' }}>Kode OTP</label>
-          <input
-            type="text"
-            placeholder="6 digit"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            style={{ width: '100%', margin: '6px 0 16px', boxSizing: 'border-box', padding: 8 }}
-          />
-          {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
-          <button disabled={loading} type="submit" style={{ width: '100%', padding: 10 }}>
+          <div className="field">
+            <label className="label" htmlFor="code">Kode OTP</label>
+            <input id="code" className="input" type="text" placeholder="6 digit"
+              value={code} onChange={(e) => setCode(e.target.value)} />
+          </div>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <button disabled={loading} className="btn btn-primary btn-full" type="submit">
             {loading ? 'Memverifikasi...' : 'Masuk'}
           </button>
         </form>

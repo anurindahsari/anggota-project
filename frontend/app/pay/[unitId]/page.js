@@ -4,6 +4,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch, apiUpload } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
+import Header from '../../../components/Header';
+
+const METHODS = [
+  { key: 'qris', label: 'QRIS' },
+  { key: 'bank_transfer', label: 'Virtual account' },
+  { key: 'manual', label: 'Transfer manual' },
+];
 
 export default function PayPage() {
   const ready = useAuthGuard();
@@ -18,8 +25,7 @@ export default function PayPage() {
   useEffect(() => {
     if (!ready) return;
     apiFetch('/owners/me/summary').then((data) => {
-      const found = data.units.find((u) => u.businessUnitId === unitId);
-      setUnit(found || null);
+      setUnit(data.units.find((u) => u.businessUnitId === unitId) || null);
     });
   }, [ready, unitId]);
 
@@ -28,12 +34,7 @@ export default function PayPage() {
     try {
       const data = await apiFetch('/payments/charge', {
         method: 'POST',
-        body: JSON.stringify({
-          businessUnitId: unit.businessUnitId,
-          periodId: unit.periodId,
-          amount: unit.shortfall,
-          paymentType: method,
-        }),
+        body: JSON.stringify({ businessUnitId: unit.businessUnitId, periodId: unit.periodId, amount: unit.shortfall, paymentType: method }),
       });
       setCharge(data);
     } catch (err) {
@@ -49,12 +50,7 @@ export default function PayPage() {
       const uploaded = await apiUpload('/uploads-api/proof', file);
       await apiFetch('/payments/manual', {
         method: 'POST',
-        body: JSON.stringify({
-          businessUnitId: unit.businessUnitId,
-          periodId: unit.periodId,
-          amount: unit.shortfall,
-          proofUrl: uploaded.url,
-        }),
+        body: JSON.stringify({ businessUnitId: unit.businessUnitId, periodId: unit.periodId, amount: unit.shortfall, proofUrl: uploaded.url }),
       });
       alert('Bukti transfer terkirim, menunggu verifikasi admin.');
     } catch (err) {
@@ -65,56 +61,53 @@ export default function PayPage() {
   }
 
   if (!ready) return null;
-  if (!unit) return <p style={{ padding: 24 }}>Memuat...</p>;
+  if (!unit) return <div className="page text-muted">Memuat...</div>;
 
   return (
-    <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 18, fontWeight: 500 }}>Bayar iuran</h1>
-      <p style={{ color: '#888', fontSize: 13 }}>{unit.businessName} &middot; {unit.period}</p>
-      <div style={{ background: '#fdecea', borderRadius: 8, padding: 14, margin: '12px 0' }}>
-        <p style={{ margin: 0, fontSize: 12, color: '#c0392b' }}>Kurang bayar</p>
-        <p style={{ margin: 0, fontSize: 20, fontWeight: 500, color: '#c0392b' }}>
-          Rp{unit.shortfall.toLocaleString('id-ID')}
-        </p>
+    <div className="page">
+      <Header />
+      <h1 className="page-title">Bayar iuran</h1>
+      <p className="page-subtitle">{unit.businessName} · {unit.period}</p>
+
+      <div className="alert alert-danger" style={{ marginBottom: 20 }}>
+        <div style={{ fontSize: 12.5, marginBottom: 2 }}>Kurang bayar</div>
+        <div style={{ fontSize: 22, fontWeight: 700 }}>Rp{unit.shortfall.toLocaleString('id-ID')}</div>
       </div>
 
-      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
-        {['qris', 'bank_transfer', 'manual'].map((m) => (
-          <button
-            key={m}
-            onClick={() => setMethod(m)}
-            style={{ flex: 1, padding: 8, fontWeight: method === m ? 500 : 400 }}
-          >
-            {m === 'qris' ? 'QRIS' : m === 'bank_transfer' ? 'Virtual account' : 'Transfer manual'}
+      <div className="row" style={{ marginBottom: 20 }}>
+        {METHODS.map((m) => (
+          <button key={m.key} onClick={() => { setMethod(m.key); setCharge(null); }}
+            className={`btn btn-sm ${method === m.key ? 'btn-selected' : 'btn-secondary'}`} style={{ flex: 1 }}>
+            {m.label}
           </button>
         ))}
       </div>
 
-      {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
       {method !== 'manual' && !charge && (
-        <button onClick={handleCharge} style={{ width: '100%', padding: 10 }}>
-          Buat kode pembayaran
-        </button>
+        <button onClick={handleCharge} className="btn btn-primary btn-full">Buat kode pembayaran</button>
       )}
 
       {charge && (
-        <div style={{ textAlign: 'center', padding: 16, background: '#f7f7f5', borderRadius: 8 }}>
-          <p style={{ fontSize: 13 }}>Kode pembayaran dibuat. Selesaikan lewat aplikasi bank/e-wallet kamu.</p>
-          <pre style={{ fontSize: 11, whiteSpace: 'pre-wrap', textAlign: 'left' }}>{JSON.stringify(charge, null, 2)}</pre>
+        <div className="card text-center">
+          <p className="text-secondary" style={{ fontSize: 13.5, marginBottom: 10 }}>
+            Kode pembayaran dibuat. Selesaikan lewat aplikasi bank/e-wallet kamu.
+          </p>
+          <pre style={{ fontSize: 11, whiteSpace: 'pre-wrap', textAlign: 'left', color: 'var(--text-muted)' }}>
+            {JSON.stringify(charge, null, 2)}
+          </pre>
         </div>
       )}
 
       {method === 'manual' && (
         <div>
-          <label style={{ fontSize: 13, color: '#666' }}>Foto/scan bukti transfer</label>
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,application/pdf"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            style={{ display: 'block', margin: '6px 0 12px' }}
-          />
-          <button disabled={uploading} onClick={handleManualSubmit} style={{ width: '100%', padding: 10 }}>
+          <div className="field">
+            <label className="label" htmlFor="proof">Foto/scan bukti transfer</label>
+            <input id="proof" className="input" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"
+              onChange={(e) => setFile(e.target.files?.[0] || null)} style={{ padding: 10 }} />
+          </div>
+          <button disabled={uploading} onClick={handleManualSubmit} className="btn btn-primary btn-full">
             {uploading ? 'Mengupload...' : 'Kirim bukti transfer'}
           </button>
         </div>

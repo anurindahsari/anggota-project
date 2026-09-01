@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '../../lib/api';
+import Header from '../../components/Header';
 
 export default function EventsListPage() {
   const [events, setEvents] = useState(null);
@@ -11,22 +12,27 @@ export default function EventsListPage() {
     apiFetch('/events/upcoming').then((data) => setEvents(data.events));
   }, []);
 
-  if (!events) return <p style={{ padding: 24 }}>Memuat...</p>;
-
   return (
-    <div style={{ maxWidth: 560, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 20, fontWeight: 500, marginBottom: 16 }}>Event terdekat</h1>
-      {events.length === 0 && <p style={{ color: '#888' }}>Belum ada event terjadwal.</p>}
-      {events.map((e) => (
-        <Link key={e.id} href={`/events/${e.id}`}>
-          <div style={{ border: '1px solid #eee', borderRadius: 8, padding: 14, marginBottom: 10 }}>
-            <p style={{ margin: 0, fontWeight: 500 }}>{e.title}</p>
-            <p style={{ margin: '4px 0 0', fontSize: 13, color: '#888' }}>
-              {new Date(e.event_date).toLocaleDateString('id-ID')} &middot; {e.location}
-            </p>
-          </div>
-        </Link>
-      ))}
+    <div className="page">
+      <Header />
+      <h1 className="page-title">Event terdekat</h1>
+      <p className="page-subtitle">Agenda DPC Surabaya yang akan datang.</p>
+
+      {!events && <div className="text-muted">Memuat...</div>}
+      {events && events.length === 0 && <div className="text-muted">Belum ada event terjadwal.</div>}
+
+      <div className="stack">
+        {events && events.map((e) => (
+          <Link href={`/events/${e.id}`} key={e.id}>
+            <div className="card">
+              <div style={{ fontWeight: 600, marginBottom: 4 }}>{e.title}</div>
+              <div className="text-secondary" style={{ fontSize: 13.5 }}>
+                {new Date(e.event_date).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })} · {e.location}
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

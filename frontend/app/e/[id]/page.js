@@ -4,9 +4,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { apiFetch } from '../../../lib/api';
+import Header from '../../../components/Header';
 
-// Halaman promosi event yang bisa dishare bebas ke luar (media sosial, WA grup umum),
-// TANPA perlu login. Kalau orangnya mau daftar, baru diarahkan login di /events/[id].
 export default function PublicEventPage() {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
@@ -18,22 +17,25 @@ export default function PublicEventPage() {
       .catch((err) => setError(err.message));
   }, [id]);
 
-  if (error) return <p style={{ padding: 24, color: 'crimson' }}>{error}</p>;
-  if (!event) return <p style={{ padding: 24 }}>Memuat...</p>;
+  if (error) return <div className="page"><div className="alert alert-danger">{error}</div></div>;
+  if (!event) return <div className="page text-muted">Memuat...</div>;
 
   return (
-    <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 20, fontWeight: 500 }}>{event.title}</h1>
-      <p style={{ color: '#888', fontSize: 13 }}>
-        {new Date(event.event_date).toLocaleDateString('id-ID', {
-          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
-        })}
-        {' · '}{event.location}
+    <div className="page">
+      <Header />
+      <h1 className="page-title">{event.title}</h1>
+      <p className="page-subtitle">
+        {new Date(event.event_date).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} · {event.location}
       </p>
-      {event.description && <p style={{ marginTop: 16, lineHeight: 1.6 }}>{event.description}</p>}
+
+      {event.description && (
+        <div className="card" style={{ marginBottom: 24 }}>
+          <p style={{ lineHeight: 1.6, fontSize: 14.5 }}>{event.description}</p>
+        </div>
+      )}
 
       <Link href={`/events/${event.id}`}>
-        <button style={{ marginTop: 20, padding: '10px 20px' }}>Masuk untuk daftar</button>
+        <button className="btn btn-primary btn-full">Masuk untuk daftar</button>
       </Link>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
+import Header from '../../../components/Header';
 
 export default function BlastAdminPage() {
   const ready = useAuthGuard();
@@ -21,70 +22,53 @@ export default function BlastAdminPage() {
 
   async function handleSend(e) {
     e.preventDefault();
-    setError('');
-    setResult('');
+    setError(''); setResult('');
     if (!message.trim()) return setError('Pesan wajib diisi.');
-
     setLoading(true);
     try {
-      const data = await apiFetch('/blast', {
-        method: 'POST',
-        body: JSON.stringify({ targetFilter, eventId: eventId || null, message }),
-      });
+      const data = await apiFetch('/blast', { method: 'POST', body: JSON.stringify({ targetFilter, eventId: eventId || null, message }) });
       setResult(data.message);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { setError(err.message); }
+    finally { setLoading(false); }
   }
 
   if (!ready) return null;
 
   return (
-    <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 18, fontWeight: 500, marginBottom: 16 }}>Kirim info ke anggota</h1>
+    <div className="page">
+      <Header />
+      <h1 className="page-title">Kirim info ke anggota</h1>
+      <p className="page-subtitle">Blast WhatsApp ke anggota terpilih.</p>
 
       <form onSubmit={handleSend}>
-        <label style={{ fontSize: 13, color: '#666' }}>Kirim ke</label>
-        <select
-          value={targetFilter}
-          onChange={(e) => setTargetFilter(e.target.value)}
-          style={{ width: '100%', margin: '6px 0 14px', padding: 8 }}
-        >
-          <option value="all">Semua pemilik</option>
-          <option value="unpaid">Yang belum bayar iuran</option>
-          <option value="registered_event">Yang sudah daftar event tertentu</option>
-        </select>
+        <div className="field">
+          <label className="label" htmlFor="target">Kirim ke</label>
+          <select id="target" className="input" value={targetFilter} onChange={(e) => setTargetFilter(e.target.value)}>
+            <option value="all">Semua pemilik</option>
+            <option value="unpaid">Yang belum bayar iuran</option>
+            <option value="registered_event">Yang sudah daftar event tertentu</option>
+          </select>
+        </div>
 
         {targetFilter === 'registered_event' && (
-          <>
-            <label style={{ fontSize: 13, color: '#666' }}>Pilih event</label>
-            <select
-              value={eventId}
-              onChange={(e) => setEventId(e.target.value)}
-              style={{ width: '100%', margin: '6px 0 14px', padding: 8 }}
-            >
+          <div className="field">
+            <label className="label" htmlFor="event">Pilih event</label>
+            <select id="event" className="input" value={eventId} onChange={(e) => setEventId(e.target.value)}>
               <option value="">-- pilih --</option>
-              {events.map((ev) => (
-                <option key={ev.id} value={ev.id}>{ev.title}</option>
-              ))}
+              {events.map((ev) => <option key={ev.id} value={ev.id}>{ev.title}</option>)}
             </select>
-          </>
+          </div>
         )}
 
-        <label style={{ fontSize: 13, color: '#666' }}>Pesan</label>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows={4}
-          style={{ width: '100%', margin: '6px 0 16px', boxSizing: 'border-box', padding: 8 }}
-        />
+        <div className="field">
+          <label className="label" htmlFor="msg">Pesan</label>
+          <textarea id="msg" className="input" rows={4} value={message} onChange={(e) => setMessage(e.target.value)} />
+        </div>
 
-        {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
-        {result && <p style={{ color: 'green', fontSize: 13 }}>{result}</p>}
+        {error && <div className="alert alert-danger">{error}</div>}
+        {result && <div className="alert alert-success">{result}</div>}
 
-        <button disabled={loading} type="submit" style={{ width: '100%', padding: 10 }}>
+        <button disabled={loading} type="submit" className="btn btn-primary btn-full">
           {loading ? 'Mengirim...' : 'Kirim sekarang'}
         </button>
       </form>

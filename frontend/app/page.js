@@ -1,11 +1,18 @@
 import Link from 'next/link';
+import Header from '../components/Header';
 
 export default function HomePage() {
   return (
-    <div style={{ maxWidth: 480, margin: '4rem auto', padding: '0 1rem', textAlign: 'center' }}>
-      <h1 style={{ fontSize: 20, fontWeight: 500 }}>Portal anggota Hiswana Migas</h1>
+    <div className="page" style={{ paddingTop: 80 }}>
+      <Header />
+      <h1 className="page-title" style={{ fontSize: 26, marginBottom: 10 }}>
+        Portal anggota
+      </h1>
+      <p className="page-subtitle" style={{ marginBottom: 28 }}>
+        Cek status iuran, bayar, dan lihat event terdekat DPC Surabaya.
+      </p>
       <Link href="/login">
-        <button style={{ marginTop: 16, padding: '10px 20px' }}>Masuk</button>
+        <button className="btn btn-primary btn-full">Masuk</button>
       </Link>
     </div>
   );

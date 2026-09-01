@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
+import Header from '../../../components/Header';
 
 export default function EventDetailPage() {
   const ready = useAuthGuard();
@@ -21,12 +22,8 @@ export default function EventDetailPage() {
       const data = await apiFetch(`/events/${id}/register`, { method: 'POST' });
       setQrImage(data.qrImage);
     } catch (err) {
-      if (err.status === 402) {
-        // Ini inti gating-nya: backend kasih tau persis unit mana yang belum lunas
-        setUnpaidUnits(err.payload.unpaidUnits);
-      } else {
-        setError(err.message);
-      }
+      if (err.status === 402) setUnpaidUnits(err.payload.unpaidUnits);
+      else setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -35,39 +32,37 @@ export default function EventDetailPage() {
   if (!ready) return null;
 
   return (
-    <div style={{ maxWidth: 480, margin: '2rem auto', padding: '0 1rem' }}>
-      <h1 style={{ fontSize: 18, fontWeight: 500 }}>Daftar event</h1>
+    <div className="page">
+      <Header />
+      <h1 className="page-title">Daftar event</h1>
+      <p className="page-subtitle">Semua unit usaha kamu harus lunas dulu untuk mendapat tiket.</p>
 
       {!qrImage && !unpaidUnits && (
-        <button disabled={loading} onClick={handleRegister} style={{ width: '100%', padding: 10, marginTop: 12 }}>
+        <button disabled={loading} onClick={handleRegister} className="btn btn-primary btn-full">
           {loading ? 'Memproses...' : 'Daftar sekarang'}
         </button>
       )}
 
-      {error && <p style={{ color: 'crimson', fontSize: 13 }}>{error}</p>}
+      {error && <div className="alert alert-danger mt-24">{error}</div>}
 
       {qrImage && (
-        <div style={{ textAlign: 'center', marginTop: 16 }}>
-          <p style={{ fontSize: 13, color: '#888' }}>Berhasil daftar. Ini tiket kamu:</p>
-          <img src={qrImage} alt="QR tiket event" style={{ width: 180, height: 180 }} />
+        <div className="card text-center">
+          <p className="text-secondary" style={{ marginBottom: 14, fontSize: 13.5 }}>Berhasil daftar, ini tiket kamu</p>
+          <img src={qrImage} alt="QR tiket event" style={{ width: 180, height: 180, borderRadius: 12 }} />
         </div>
       )}
 
       {unpaidUnits && (
-        <div style={{ marginTop: 16 }}>
-          <div style={{ background: '#fdecea', borderRadius: 8, padding: 14, marginBottom: 8 }}>
-            <p style={{ margin: 0, fontSize: 13, color: '#c0392b' }}>
-              Masih ada unit usaha yang belum lunas iuran. Lunasi dulu sebelum bisa daftar:
-            </p>
+        <div className="mt-24">
+          <div className="alert alert-danger">Masih ada unit usaha yang belum lunas iuran. Lunasi dulu sebelum bisa daftar.</div>
+          <div className="list">
+            {unpaidUnits.map((u, i) => (
+              <div className="list-item" key={i}>
+                <div className="list-item-title">{u.business_name}</div>
+                <span className="badge badge-danger">Kurang Rp{(u.amount_due - u.paid).toLocaleString('id-ID')}</span>
+              </div>
+            ))}
           </div>
-          {unpaidUnits.map((u, i) => (
-            <div key={i} style={{ border: '1px solid #eee', borderRadius: 8, padding: 12, marginBottom: 8 }}>
-              <p style={{ margin: 0, fontSize: 14 }}>{u.business_name}</p>
-              <p style={{ margin: 0, fontSize: 12, color: '#888' }}>
-                Kurang Rp{(u.amount_due - u.paid).toLocaleString('id-ID')}
-              </p>
-            </div>
-          ))}
         </div>
       )}
     </div>
