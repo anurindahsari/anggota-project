@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '../../lib/api';
-import Header from '../../components/Header';
+import PublicNav from '../../components/PublicNav';
 
 export default function EventsListPage() {
   const [events, setEvents] = useState(null);
@@ -13,13 +13,14 @@ export default function EventsListPage() {
   }, []);
 
   return (
-    <div className="page">
-      <Header />
-      <h1 className="page-title">Event terdekat</h1>
+    <div>
+      <PublicNav />
+      <div className="page" style={{ paddingTop: 8 }}>
+      <h1 className="page-title">Acara terdekat</h1>
       <p className="page-subtitle">Agenda DPC Surabaya yang akan datang.</p>
 
       {!events && <div className="text-muted">Memuat...</div>}
-      {events && events.length === 0 && <div className="text-muted">Belum ada event terjadwal.</div>}
+      {events && events.length === 0 && <div className="text-muted">Belum ada acara terjadwal.</div>}
 
       <div className="stack">
         {events && events.map((e) => (
@@ -32,6 +33,7 @@ export default function EventsListPage() {
             </div>
           </Link>
         ))}
+      </div>
       </div>
     </div>
   );

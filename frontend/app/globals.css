@@ -227,3 +227,195 @@ textarea.input { resize: vertical; font-family: inherit; }
 .stack { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; gap: 8px; }
 .row-between { display: flex; justify-content: space-between; align-items: center; }
+
+/* Public nav */
+.public-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 20px;
+  flex-wrap: wrap;
+}
+.public-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.public-nav-links {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+.public-nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+}
+.public-nav-link:hover { color: var(--text-primary); background: var(--surface); }
+.public-nav-link.active { color: var(--brand); background: var(--brand-soft); }
+
+.hero {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 20px 32px;
+  text-align: center;
+}
+.hero h1 {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+.hero p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 480px;
+  margin: 0 auto 24px;
+  line-height: 1.6;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  max-width: 720px;
+  margin: 32px auto 0;
+  padding: 0 20px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  text-align: left;
+}
+.feature-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.feature-title { font-size: 14.5px; font-weight: 600; margin-bottom: 4px; }
+.feature-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+
+.content-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 8px 20px 64px;
+}
+.content-page h2 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 32px 0 10px;
+}
+.content-page h2:first-child { margin-top: 0; }
+.content-page p {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+.content-page ul { margin: 0 0 10px; padding-left: 20px; }
+.content-page li {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+/* Top nav (halaman publik) */
+.topnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0;
+}
+.topnav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.topnav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.topnav-link.active { color: var(--brand); }
+.topnav .header { margin-bottom: 0; }
+
+/* Hero */
+.hero {
+  padding: 64px 0 48px;
+  text-align: left;
+}
+.hero-title {
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  max-width: 620px;
+  margin-bottom: 16px;
+}
+.hero-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 40px 0 64px;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+}
+.feature-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.feature-card-desc {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.section-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 10px;
+}
+.prose p {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+  .topnav-links { gap: 16px; }
+  .hero-title { font-size: 26px; }
+  .feature-grid { grid-template-columns: 1fr; }
+}
