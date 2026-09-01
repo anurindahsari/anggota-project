@@ -57,10 +57,19 @@ a { color: inherit; text-decoration: none; }
   flex-shrink: 0;
 }
 .header-word {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--brand);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+.header-sub {
   font-weight: 600;
-  font-size: 15px;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
+  font-size: 13px;
+  color: var(--brand);
+  letter-spacing: 0.16em;
+  line-height: 1.25;
+  margin-top: 1px;
 }
 
 .page-title {
