@@ -271,12 +271,15 @@ textarea.input { resize: vertical; font-family: inherit; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--brand);
-  margin-bottom: 4px;
+  line-height: 1;
+  margin-bottom: 0;
 }
 .hero h1 {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin-top: 6px;
   margin-bottom: 8px;
 }
 .hero p {
