@@ -7,6 +7,7 @@ const LINKS = [
   { href: '/', label: 'Beranda' },
   { href: '/dashboard', label: 'Keanggotaan' },
   { href: '/events', label: 'Acara' },
+  { href: '/panduan', label: 'Panduan' },
 ];
 
 export default function PublicNav() {
