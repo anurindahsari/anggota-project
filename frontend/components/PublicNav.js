@@ -18,8 +18,8 @@ export default function PublicNav() {
       <Link href="/" className="public-nav-brand">
         <img src="/logo.png" alt="Hiswana Migas" className="header-mark" />
         <div>
-          <div className="header-word">HISWANA MIGAS</div>
-          <div className="header-sub">DPC SURABAYA</div>
+          <div className="header-word" style={{ fontSize: 17, letterSpacing: 0.2, lineHeight: 1.15 }}>HISWANA MIGAS</div>
+          <div className="header-sub" style={{ fontSize: 10, letterSpacing: 2.1, lineHeight: 1.3 }}>DPC SURABAYA</div>
         </div>
       </Link>
 
