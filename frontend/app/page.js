@@ -7,13 +7,12 @@ export default function HomePage() {
       <PublicNav />
 
       <div className="hero">
+        <div className="hero-text">
         <h1>Portal anggota Hiswana Migas DPC Surabaya</h1>
         <p>
-          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi —
-          untuk seluruh anggota SPBU, agen LPG, SPBE, transportir BBM/elpiji/avtur,
-          retester, dan pelumas se-DPC Surabaya (Surabaya, Sidoarjo, Gresik,
-          Mojokerto, Lamongan, Bojonegoro, dan Jombang).
+          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi — untuk seluruh anggota SPBU, agen LPG (PSO dan non-PSO), SP(P)BE, transportir BBM/elpiji/avtur, retester, dan pelumas se-DPC Surabaya (Surabaya, Sidoarjo, Gresik, Mojokerto, Lamongan, Bojonegoro, dan Jombang).
         </p>
+        </div>
         <Link href="/login">
           <button className="btn btn-primary">Masuk sebagai anggota</button>
         </Link>
