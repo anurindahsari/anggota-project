@@ -1,6 +1,7 @@
 {
   "/page": "app/page.js",
+  "/panduan/page": "app/panduan/page.js",
+  "/kontak/page": "app/kontak/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/login/page": "app/login/page.js",
-  "/kontak/page": "app/kontak/page.js"
+  "/events/page": "app/events/page.js"
 }
