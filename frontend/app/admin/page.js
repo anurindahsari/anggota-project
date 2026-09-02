@@ -75,6 +75,7 @@ export default function AdminDashboardPage() {
 
       <div className="row" style={{ marginBottom: 28 }}>
         <button onClick={handleExport} className="btn btn-secondary btn-sm">Export rekap CSV</button>
+        <Link href="/admin/anggota"><button className="btn btn-secondary btn-sm">Kelola data anggota</button></Link>
         <Link href="/admin/blast"><button className="btn btn-secondary btn-sm">Kirim blast WA</button></Link>
       </div>
 

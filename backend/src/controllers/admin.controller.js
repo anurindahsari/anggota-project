@@ -89,3 +89,76 @@ export async function exportPaymentsCsv(req, res) {
   res.setHeader('Content-Disposition', 'attachment; filename="rekap-pembayaran.csv"');
   res.send(header + csvBody);
 }
+
+// GET /admin/owners?search=...
+// List semua owner + unit usaha mereka, buat halaman kelola data anggota.
+export async function listOwnersAdmin(req, res) {
+  const { search } = req.query;
+  const params = [];
+  let where = '';
+  if (search && search.trim()) {
+    params.push(`%${search.trim()}%`);
+    where = `WHERE o.full_name ILIKE $1 OR o.phone ILIKE $1`;
+  }
+
+  const { rows } = await query(
+    `SELECT o.id, o.full_name, o.phone, o.role, o.status,
+       COALESCE(
+         json_agg(
+           json_build_object(
+             'id', bu.id, 'business_name', bu.business_name, 'business_type', bu.business_type,
+             'unit_number', bu.unit_number, 'address', bu.address, 'city', bu.city,
+             'contact_email', bu.contact_email, 'status', bu.status
+           ) ORDER BY bu.business_name
+         ) FILTER (WHERE bu.id IS NOT NULL), '[]'
+       ) AS business_units
+     FROM owners o
+     LEFT JOIN business_units bu ON bu.owner_id = o.id
+     ${where}
+     GROUP BY o.id
+     ORDER BY o.full_name
+     LIMIT 100`,
+    params
+  );
+
+  res.json({ owners: rows });
+}
+
+// PATCH /admin/owners/:id  { fullName, phone, status }
+export async function updateOwnerAdmin(req, res) {
+  const { id } = req.params;
+  const { fullName, phone, status } = req.body;
+
+  await query(
+    `UPDATE owners SET
+       full_name = COALESCE($2, full_name),
+       phone = COALESCE($3, phone),
+       status = COALESCE($4, status),
+       updated_at = now()
+     WHERE id = $1`,
+    [id, fullName || null, phone || null, status || null]
+  );
+
+  res.json({ message: 'Data pemilik diperbarui.' });
+}
+
+// PATCH /admin/business-units/:id
+export async function updateBusinessUnitAdmin(req, res) {
+  const { id } = req.params;
+  const { businessName, businessType, unitNumber, address, city, contactEmail, status } = req.body;
+
+  await query(
+    `UPDATE business_units SET
+       business_name = COALESCE($2, business_name),
+       business_type = COALESCE($3, business_type),
+       unit_number = COALESCE($4, unit_number),
+       address = COALESCE($5, address),
+       city = COALESCE($6, city),
+       contact_email = COALESCE($7, contact_email),
+       status = COALESCE($8, status)
+     WHERE id = $1`,
+    [id, businessName || null, businessType || null, unitNumber || null, address || null, city || null, contactEmail || null, status || null]
+  );
+
+  res.json({ message: 'Data unit usaha diperbarui.' });
+}
