@@ -17,8 +17,8 @@ export default function HomePage() {
         </Link>
       </div>
 
-      <div className="hero-banner">
-        <div className="hero-banner-inner" style={{ padding: 0, overflow: 'hidden' }}>
+      <div className="hero-banner" style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px' }}>
+        <div className="hero-banner-inner" style={{ padding: 0, overflow: 'hidden', borderRadius: 18 }}>
           <img
             src="/hero-refinery.jpg"
             alt="Kilang minyak dan gas dari udara"
