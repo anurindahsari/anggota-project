@@ -22,7 +22,7 @@ export default function HomePage() {
           <img
             src="/hero-refinery.jpg"
             alt="Kilang minyak dan gas dari udara"
-            style={{ width: '100%', height: '190px', objectFit: 'cover', display: 'block' }}
+            className="hero-banner-img"
           />
         </div>
         <p style={{ fontSize: 11.5, color: 'var(--text-muted)', textAlign: 'right', marginTop: 8, marginBottom: 0 }}>
@@ -40,7 +40,7 @@ export default function HomePage() {
       </div>
 
       <div className="feature-section" style={{ marginTop: 20 }}>
-        <div className="feature-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 280px))', justifyContent: 'center', gap: 24 }}>
+        <div className="feature-grid">
           <div className="feature-card">
             <div className="feature-icon">1</div>
             <div className="feature-title">Cek status iuran</div>

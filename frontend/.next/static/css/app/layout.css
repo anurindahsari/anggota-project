@@ -611,3 +611,32 @@ textarea.input { resize: vertical; font-family: inherit; }
   .feature-grid { grid-template-columns: 1fr; }
 }
 
+
+/* ===== Perbaikan responsif: HP, iPad, laptop ===== */
+.hero-banner-img {
+  width: 100%;
+  height: clamp(140px, 24vw, 260px);
+  object-fit: cover;
+  display: block;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 18px;
+  gap: 18px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+@media (max-width: 900px) {
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .feature-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .public-nav { justify-content: center; text-align: center; }
+  .public-nav-links { flex: 1 1 100%; order: 3; }
+}
+
