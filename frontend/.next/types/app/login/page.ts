@@ -1,4 +1,4 @@
-// File: /Users/mac/Desktop/anggota-project/frontend/app/login/page.js
+// File: /Users/mac/Desktop/anggota-project/anggota-project/frontend/app/login/page.js
 import * as entry from '../../../../app/login/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

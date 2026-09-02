@@ -1,8 +1,8 @@
-// File: /Users/mac/Desktop/anggota-project/frontend/app/events/[id]/page.js
-import * as entry from '../../../../../app/events/[id]/page.js'
+// File: /Users/mac/Desktop/anggota-project/anggota-project/frontend/app/panduan/page.js
+import * as entry from '../../../../app/panduan/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../../app/events/[id]/page.js')
+type TEntry = typeof import('../../../../app/panduan/page.js')
 
 // Check that the entry is a valid entry
 checkFields<Diff<{
