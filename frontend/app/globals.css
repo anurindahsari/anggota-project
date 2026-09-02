@@ -250,7 +250,8 @@ textarea.input { resize: vertical; font-family: inherit; }
 .public-nav-link.active { color: var(--brand); background: var(--brand-soft); }
 @media (max-width: 900px) {
   .public-nav { justify-content: center; text-align: center; }
-  .public-nav-links { flex: 1 1 100%; order: 3; }
+  .public-nav-right { flex: 1 1 100%; flex-wrap: wrap; justify-content: center; gap: 14px; order: 3; }
+  .public-nav-links { flex-wrap: wrap; justify-content: center; }
 }
 
 /* ===== Hero (halaman utama) ===== */
