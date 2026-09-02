@@ -12,6 +12,7 @@ export function requireAuth(req, res, next) {
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.ownerId = payload.ownerId; // dipakai di controller buat tau siapa yang request
+    req.ownerRole = payload.role;  // dipakai requireAdmin buat cek akses
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Sesi habis atau token tidak valid. Silakan login ulang.' });
