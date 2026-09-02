@@ -10,34 +10,28 @@ export default function HomePage() {
         <div className="hero-text">
         <h1>Portal anggota Hiswana Migas DPC Surabaya</h1>
         <p>
-          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi — untuk seluruh anggota SPBU, agen LPG (PSO dan non-PSO), SP(P)BE, transportir BBM/elpiji/avtur, retester, dan pelumas se-DPC Surabaya (Surabaya, Sidoarjo, Gresik, Mojokerto, Lamongan, Bojonegoro, dan Jombang).
+          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi — untuk seluruh anggota SPBU, agen LPG (PSO dan non-PSO), SP(P)BE, transportir BBM/elpiji/avtur, retester, dan pelumas se-DPC Surabaya (Surabaya, Sidoarjo, Gresik, Mojokerto, Lamongan, Bojonegoro, Tuban, dan Jombang).
         </p>
         </div>
-        <Link href="/login">
-          <button className="btn btn-primary">Masuk sebagai anggota</button>
-        </Link>
-      </div>
-
-      <div className="hero-banner" style={{ maxWidth: 960, margin: '0 auto', padding: '0 20px' }}>
-        <div className="hero-banner-inner" style={{ padding: 0, overflow: 'hidden', borderRadius: 18 }}>
+        <div className="hero-photo">
           <img
             src="/hero-refinery.jpg"
             alt="Kilang minyak dan gas dari udara"
-            className="hero-banner-img"
+            className="hero-photo-img"
           />
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'right', marginTop: 6, marginBottom: 0 }}>
+            Foto oleh{' '}
+            <a
+              href="https://www.magnific.com/free-photo/aerial-view-gas-oil-refinery-oil-industry_23404841.htm"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
+            >
+              tawatchai07
+            </a>{' '}
+            di Freepik
+          </p>
         </div>
-        <p style={{ fontSize: 11.5, color: 'var(--text-muted)', textAlign: 'right', marginTop: 8, marginBottom: 0 }}>
-          Foto oleh{' '}
-          <a
-            href="https://www.magnific.com/free-photo/aerial-view-gas-oil-refinery-oil-industry_23404841.htm"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
-          >
-            tawatchai07
-          </a>{' '}
-          di Freepik
-        </p>
       </div>
 
       <div className="feature-section" style={{ marginTop: 20 }}>

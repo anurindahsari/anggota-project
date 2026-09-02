@@ -421,7 +421,7 @@ textarea.input { resize: vertical; font-family: inherit; }
   margin: 0 auto;
   padding: 56px 20px 40px;
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 48px;
   flex-wrap: wrap;
 }
@@ -638,5 +638,19 @@ textarea.input { resize: vertical; font-family: inherit; }
 @media (max-width: 900px) {
   .public-nav { justify-content: center; text-align: center; }
   .public-nav-links { flex: 1 1 100%; order: 3; }
+}
+
+
+/* Foto hero di samping teks */
+.hero-photo {
+  flex: 1 1 320px;
+  min-width: 280px;
+}
+.hero-photo-img {
+  width: 100%;
+  height: clamp(180px, 22vw, 320px);
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
 }
 
