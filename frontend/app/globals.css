@@ -394,7 +394,7 @@ textarea.input { resize: vertical; font-family: inherit; }
 
 /* Hero */
 .hero {
-  padding: 64px 0 48px;
+  padding: 64px 20px 48px;
   text-align: left;
 }
 .hero-title {
