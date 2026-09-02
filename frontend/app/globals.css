@@ -504,3 +504,8 @@ textarea.input { resize: vertical; font-family: inherit; }
   border-radius: 18px;
   display: block;
 }
+
+/* Perbaikan final: pastikan menang dari semua definisi .hero-text/.hero-photo di atas */
+@media (max-width: 680px) {
+  .hero-text, .hero-photo { flex-basis: auto; }
+}
