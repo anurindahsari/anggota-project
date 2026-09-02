@@ -237,7 +237,8 @@ textarea.input { resize: vertical; font-family: inherit; }
   flex-wrap: wrap;
 }
 .public-nav-brand { display: flex; align-items: center; gap: 10px; }
-.public-nav-links { display: flex; gap: 4px; flex: 1; justify-content: center; }
+.public-nav-right { display: flex; align-items: center; gap: 28px; }
+.public-nav-links { display: flex; gap: 4px; }
 .public-nav-link {
   font-size: 14px;
   font-weight: 500;
