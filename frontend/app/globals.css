@@ -265,7 +265,7 @@ textarea.input { resize: vertical; font-family: inherit; }
   margin: 0 auto;
   padding: 56px 20px 40px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 48px;
   flex-wrap: wrap;
 }
