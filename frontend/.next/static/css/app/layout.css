@@ -458,6 +458,8 @@ textarea.input { resize: vertical; font-family: inherit; }
 }
 @media (max-width: 680px) {
   .hero { flex-direction: column; padding-top: 24px; gap: 24px; }
+  .hero p { text-align: left; }
+  .hero-text, .hero-photo { flex-basis: auto; }
 }
 
 .feature-section {
