@@ -12,14 +12,22 @@ export async function sendWhatsApp(phone, message) {
   }
 
   try {
-    await axios.post(
-      process.env.WA_API_URL,
-      { target: phone, message },
-      { headers: { Authorization: process.env.WA_API_TOKEN } }
-    );
+    const params = new URLSearchParams();
+    params.append('target', phone);
+    params.append('message', message);
+    params.append('countryCode', '62');
+
+    const res = await axios.post(process.env.WA_API_URL, params, {
+      headers: { Authorization: process.env.WA_API_TOKEN },
+    });
+
+    if (res.data && res.data.status === false) {
+      console.error('Fonnte menolak pesan ke', phone, res.data);
+      return false;
+    }
     return true;
   } catch (err) {
-    console.error('Gagal kirim WA ke', phone, err.message);
+    console.error('Gagal kirim WA ke', phone, err.response?.data || err.message);
     return false;
   }
 }
