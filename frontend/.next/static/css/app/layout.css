@@ -429,12 +429,19 @@ textarea.input { resize: vertical; font-family: inherit; }
   flex: 1 1 320px;
   min-width: 280px;
 }
+.hero-eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brand);
+  margin-bottom: 8px;
+}
 .hero h1 {
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 14px;
-  text-align: justify;
+  margin-bottom: 10px;
 }
 .hero p {
   font-size: 15.5px;
@@ -458,7 +465,7 @@ textarea.input { resize: vertical; font-family: inherit; }
   background: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 20px 20px 48px;
+  padding: 8px 20px 48px;
 }
 .feature-grid {
   display: grid;
@@ -553,7 +560,7 @@ textarea.input { resize: vertical; font-family: inherit; }
 
 /* Hero */
 .hero {
-  padding: 64px 20px 16px;
+  padding: 48px 20px 4px;
   text-align: left;
 }
 .hero-title {
