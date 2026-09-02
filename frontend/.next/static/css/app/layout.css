@@ -457,8 +457,7 @@ textarea.input { resize: vertical; font-family: inherit; }
   justify-content: center;
 }
 @media (max-width: 680px) {
-  .hero { flex-direction: column-reverse; text-align: center; padding-top: 24px; }
-  .hero p { margin-left: auto; margin-right: auto; }
+  .hero { flex-direction: column; padding-top: 24px; gap: 24px; }
 }
 
 .feature-section {
