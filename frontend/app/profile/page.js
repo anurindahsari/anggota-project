@@ -11,10 +11,15 @@ export default function ProfilePage() {
   const [fullName, setFullName] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+
   const [changingPhone, setChangingPhone] = useState(false);
-  const [otpSent, setOtpSent] = useState(false);
+  const [phonePassword, setPhonePassword] = useState('');
   const [newPhone, setNewPhone] = useState('');
-  const [code, setCode] = useState('');
+
+  const [changingPassword, setChangingPassword] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   useEffect(() => {
     if (!ready) return;
@@ -33,22 +38,37 @@ export default function ProfilePage() {
     } catch (err) { setError(err.message); }
   }
 
-  async function handleRequestPhoneOtp() {
-    setError('');
+  async function handleChangePhone(e) {
+    e.preventDefault();
+    setError(''); setMessage('');
     try {
-      await apiFetch('/owners/me/change-phone/request', { method: 'POST' });
-      setOtpSent(true);
+      await apiFetch('/owners/me/change-phone', {
+        method: 'POST',
+        body: JSON.stringify({ password: phonePassword, newPhone }),
+      });
+      setMessage('Nomor WhatsApp berhasil diganti.');
+      setChangingPhone(false);
+      setPhonePassword('');
+      setNewPhone('');
     } catch (err) { setError(err.message); }
   }
 
-  async function handleConfirmPhoneChange(e) {
+  async function handleChangePassword(e) {
     e.preventDefault();
-    setError('');
+    setError(''); setMessage('');
+    if (newPassword !== confirmPassword) {
+      return setError('Konfirmasi password baru tidak cocok.');
+    }
     try {
-      await apiFetch('/owners/me/change-phone/confirm', { method: 'POST', body: JSON.stringify({ code, newPhone }) });
-      setMessage('Nomor WhatsApp berhasil diganti.');
-      setChangingPhone(false);
-      setOtpSent(false);
+      await apiFetch('/owners/me/change-password', {
+        method: 'POST',
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      setMessage('Password berhasil diganti.');
+      setChangingPassword(false);
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
     } catch (err) { setError(err.message); }
   }
 
@@ -71,29 +91,53 @@ export default function ProfilePage() {
         </form>
       </div>
 
-      <div className="card">
+      <div className="card" style={{ marginBottom: 16 }}>
         <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
-          Nomor WhatsApp dipakai untuk login, jadi butuh verifikasi kode dulu sebelum diganti.
+          Butuh password kamu buat konfirmasi sebelum nomor diganti.
         </p>
         <p style={{ fontSize: 14, marginBottom: 12 }}>Nomor saat ini: <strong>{owner.phone || '(belum ada)'}</strong></p>
 
         {!changingPhone && (
           <button onClick={() => setChangingPhone(true)} className="btn btn-secondary btn-sm">Ganti nomor</button>
         )}
-        {changingPhone && !otpSent && (
-          <button onClick={handleRequestPhoneOtp} className="btn btn-secondary btn-sm">Kirim kode verifikasi ke nomor lama</button>
-        )}
-        {changingPhone && otpSent && (
-          <form onSubmit={handleConfirmPhoneChange}>
+        {changingPhone && (
+          <form onSubmit={handleChangePhone}>
             <div className="field" style={{ marginBottom: 10 }}>
-              <label className="label" htmlFor="otpCode">Kode verifikasi</label>
-              <input id="otpCode" className="input" type="text" value={code} onChange={(e) => setCode(e.target.value)} />
+              <label className="label" htmlFor="phonePassword">Password kamu</label>
+              <input id="phonePassword" className="input" type="password" value={phonePassword} onChange={(e) => setPhonePassword(e.target.value)} />
             </div>
             <div className="field" style={{ marginBottom: 14 }}>
               <label className="label" htmlFor="newPhone">Nomor WhatsApp baru</label>
               <input id="newPhone" className="input" type="text" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
             </div>
             <button type="submit" className="btn btn-primary btn-sm">Konfirmasi ganti nomor</button>
+          </form>
+        )}
+      </div>
+
+      <div className="card">
+        <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
+          Ganti password akun kamu secara berkala biar tetap aman.
+        </p>
+
+        {!changingPassword && (
+          <button onClick={() => setChangingPassword(true)} className="btn btn-secondary btn-sm">Ganti password</button>
+        )}
+        {changingPassword && (
+          <form onSubmit={handleChangePassword}>
+            <div className="field" style={{ marginBottom: 10 }}>
+              <label className="label" htmlFor="currentPassword">Password lama</label>
+              <input id="currentPassword" className="input" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+            </div>
+            <div className="field" style={{ marginBottom: 10 }}>
+              <label className="label" htmlFor="newPassword">Password baru</label>
+              <input id="newPassword" className="input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+            </div>
+            <div className="field" style={{ marginBottom: 14 }}>
+              <label className="label" htmlFor="confirmPassword">Ulangi password baru</label>
+              <input id="confirmPassword" className="input" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+            </div>
+            <button type="submit" className="btn btn-primary btn-sm">Simpan password baru</button>
           </form>
         )}
       </div>

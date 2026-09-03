@@ -1,5 +1,6 @@
+import bcrypt from 'bcryptjs';
 import { query } from '../config/db.js';
-import { requestOtp, verifyOtp, isRateLimited } from '../services/otp.service.js';
+import { normalizePhone } from '../utils/phone.js';
 
 // GET /owners/me
 export async function getMe(req, res) {
@@ -11,8 +12,6 @@ export async function getMe(req, res) {
 }
 
 // PATCH /owners/me  { fullName }
-// Sengaja cuma nama yang bisa diedit langsung di sini - alamat itu milik tiap unit usaha
-// (satu owner bisa punya banyak unit dengan alamat beda-beda), jadi diedit dari halaman unit.
 export async function updateMe(req, res) {
   const { fullName } = req.body;
   if (!fullName) return res.status(400).json({ error: 'Nama wajib diisi.' });
@@ -24,50 +23,58 @@ export async function updateMe(req, res) {
   res.json({ message: 'Profil diperbarui.' });
 }
 
-// POST /owners/me/change-phone/request
-// Kirim OTP ke nomor LAMA dulu, buat buktiin yang minta ganti nomor beneran pemilik akun ini.
-export async function requestPhoneChange(req, res) {
-  const { rows } = await query(`SELECT phone FROM owners WHERE id = $1`, [req.ownerId]);
-  const currentPhone = rows[0]?.phone;
-  if (!currentPhone) {
-    return res.status(400).json({ error: 'Akun ini belum punya nomor HP terdaftar, hubungi admin.' });
+// POST /owners/me/change-phone  { password, newPhone }
+// Verifikasi pakai password (bukan OTP lagi) sebelum ganti nomor.
+export async function changePhone(req, res) {
+  const { password, newPhone } = req.body;
+  if (!password || !newPhone) {
+    return res.status(400).json({ error: 'Password dan nomor baru wajib diisi.' });
   }
 
-  if (await isRateLimited(currentPhone, 'change_phone')) {
-    return res.status(429).json({ error: 'Terlalu sering minta kode. Coba lagi dalam beberapa menit.' });
-  }
+  const normalizedNew = normalizePhone(newPhone);
+  if (!normalizedNew) return res.status(400).json({ error: 'Nomor WhatsApp baru tidak valid.' });
 
-  await requestOtp(currentPhone, 'change_phone');
-  res.json({ message: 'Kode verifikasi dikirim ke nomor WhatsApp yang lama.' });
-}
+  const { rows } = await query('SELECT phone, password_hash FROM owners WHERE id = $1', [req.ownerId]);
+  const current = rows[0];
 
-// POST /owners/me/change-phone/confirm  { code, newPhone }
-export async function confirmPhoneChange(req, res) {
-  const { code, newPhone } = req.body;
-  const { rows } = await query(`SELECT phone FROM owners WHERE id = $1`, [req.ownerId]);
-  const currentPhone = rows[0]?.phone;
+  const match = await bcrypt.compare(password, current.password_hash);
+  if (!match) return res.status(400).json({ error: 'Password salah.' });
 
-  const valid = await verifyOtp(currentPhone, code, 'change_phone');
-  if (!valid) return res.status(400).json({ error: 'Kode salah atau kedaluwarsa.' });
-
-  const clash = await query(`SELECT id FROM owners WHERE phone = $1 AND id != $2`, [newPhone, req.ownerId]);
+  const clash = await query('SELECT id FROM owners WHERE phone = $1 AND id != $2', [normalizedNew, req.ownerId]);
   if (clash.rows.length > 0) {
     return res.status(409).json({ error: 'Nomor itu sudah dipakai akun lain.' });
   }
 
-  await query(`UPDATE owners SET phone = $1, updated_at = now() WHERE id = $2`, [newPhone, req.ownerId]);
+  await query('UPDATE owners SET phone = $1, updated_at = now() WHERE id = $2', [normalizedNew, req.ownerId]);
   await query(
     `INSERT INTO audit_logs (actor_id, action, entity, entity_id, old_value, new_value)
      VALUES ($1, 'phone_changed', 'owners', $1, $2, $3)`,
-    [req.ownerId, JSON.stringify({ phone: currentPhone }), JSON.stringify({ phone: newPhone })]
+    [req.ownerId, JSON.stringify({ phone: current.phone }), JSON.stringify({ phone: normalizedNew })]
   );
 
   res.json({ message: 'Nomor WhatsApp berhasil diganti.' });
 }
 
+// POST /owners/me/change-password  { currentPassword, newPassword }
+export async function changePassword(req, res) {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: 'Password lama dan baru wajib diisi.' });
+  }
+  if (newPassword.length < 6) {
+    return res.status(400).json({ error: 'Password baru minimal 6 karakter.' });
+  }
+
+  const { rows } = await query('SELECT password_hash FROM owners WHERE id = $1', [req.ownerId]);
+  const match = await bcrypt.compare(currentPassword, rows[0].password_hash);
+  if (!match) return res.status(400).json({ error: 'Password lama salah.' });
+
+  const newHash = await bcrypt.hash(newPassword, 10);
+  await query('UPDATE owners SET password_hash = $1, updated_at = now() WHERE id = $2', [newHash, req.ownerId]);
+  res.json({ message: 'Password berhasil diganti.' });
+}
+
 // GET /owners/me/summary
-// Status bayar SELALU dihitung on-the-fly dari payments vs membership_periods,
-// tidak pernah disimpan sebagai kolom terpisah - biar tidak pernah out of sync.
 export async function getMySummary(req, res) {
   const { rows: units } = await query(
     `SELECT

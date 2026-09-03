@@ -4,15 +4,15 @@ import {
   getMySummary,
   getMe,
   updateMe,
-  requestPhoneChange,
-  confirmPhoneChange,
+  changePhone,
+  changePassword,
 } from '../controllers/owners.controller.js';
 
 const router = Router();
 router.get('/me', requireAuth, getMe);
 router.patch('/me', requireAuth, updateMe);
-router.post('/me/change-phone/request', requireAuth, requestPhoneChange);
-router.post('/me/change-phone/confirm', requireAuth, confirmPhoneChange);
+router.post('/me/change-phone', requireAuth, changePhone);
+router.post('/me/change-password', requireAuth, changePassword);
 router.get('/me/summary', requireAuth, getMySummary);
 
 export default router;
