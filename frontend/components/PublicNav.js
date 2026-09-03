@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { getToken } from '../lib/api';
 
 const LINKS = [
   { href: '/', label: 'Beranda' },
@@ -13,6 +15,11 @@ const LINKS = [
 
 export default function PublicNav() {
   const pathname = usePathname();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setLoggedIn(!!getToken());
+  }, [pathname]);
 
   return (
     <div className="public-nav">

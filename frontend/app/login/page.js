@@ -1,12 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiFetch, setToken } from '../../lib/api';
+import { apiFetch, setToken, getToken } from '../../lib/api';
 import Header from '../../components/Header';
 
 export default function LoginPage() {
   const router = useRouter();
+
+  useEffect(() => {
+    if (getToken()) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
+
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
