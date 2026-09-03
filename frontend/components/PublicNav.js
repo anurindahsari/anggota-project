@@ -44,8 +44,8 @@ export default function PublicNav() {
           ))}
         </nav>
 
-        <Link href="/login">
-          <button className="btn btn-primary btn-sm">Masuk</button>
+        <Link href={loggedIn ? '/dashboard' : '/login'}>
+          <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
         </Link>
       </div>
     </div>
