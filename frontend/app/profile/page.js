@@ -73,77 +73,84 @@ export default function ProfilePage() {
   }
 
   if (!ready) return null;
-  if (!owner) return <div className="page text-muted">Memuat...</div>;
+  if (!owner) return (
+    <div>
+      <Header />
+      <div className="page text-muted">Memuat...</div>
+    </div>
+  );
 
   return (
-    <div className="page">
+    <div>
       <Header />
-      <h1 className="page-title">Edit profil</h1>
-      <p className="page-subtitle">Kelola data pribadi kamu.</p>
+      <div className="page">
+        <h1 className="page-title">Edit profil</h1>
+        <p className="page-subtitle">Kelola data pribadi kamu.</p>
 
-      <div className="card" style={{ marginBottom: 16 }}>
-        <form onSubmit={handleSaveName}>
-          <div className="field" style={{ marginBottom: 14 }}>
-            <label className="label" htmlFor="fullName">Nama lengkap</label>
-            <input id="fullName" className="input" type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
-          </div>
-          <button type="submit" className="btn btn-secondary btn-sm">Simpan nama</button>
-        </form>
-      </div>
-
-      <div className="card" style={{ marginBottom: 16 }}>
-        <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
-          Butuh password kamu buat konfirmasi sebelum nomor diganti.
-        </p>
-        <p style={{ fontSize: 14, marginBottom: 12 }}>Nomor saat ini: <strong>{owner.phone || '(belum ada)'}</strong></p>
-
-        {!changingPhone && (
-          <button onClick={() => setChangingPhone(true)} className="btn btn-secondary btn-sm">Ganti nomor</button>
-        )}
-        {changingPhone && (
-          <form onSubmit={handleChangePhone}>
-            <div className="field" style={{ marginBottom: 10 }}>
-              <label className="label" htmlFor="phonePassword">Password kamu</label>
-              <input id="phonePassword" className="input" type="password" value={phonePassword} onChange={(e) => setPhonePassword(e.target.value)} />
-            </div>
+        <div className="card" style={{ marginBottom: 16 }}>
+          <form onSubmit={handleSaveName}>
             <div className="field" style={{ marginBottom: 14 }}>
-              <label className="label" htmlFor="newPhone">Nomor WhatsApp baru</label>
-              <input id="newPhone" className="input" type="text" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
+              <label className="label" htmlFor="fullName">Nama lengkap</label>
+              <input id="fullName" className="input" type="text" value={fullName} onChange={(e) => setFullName(e.target.value)} />
             </div>
-            <button type="submit" className="btn btn-primary btn-sm">Konfirmasi ganti nomor</button>
+            <button type="submit" className="btn btn-secondary btn-sm">Simpan nama</button>
           </form>
-        )}
+        </div>
+
+        <div className="card" style={{ marginBottom: 16 }}>
+          <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
+            Butuh password kamu buat konfirmasi sebelum nomor diganti.
+          </p>
+          <p style={{ fontSize: 14, marginBottom: 12 }}>Nomor saat ini: <strong>{owner.phone || '(belum ada)'}</strong></p>
+
+          {!changingPhone && (
+            <button onClick={() => setChangingPhone(true)} className="btn btn-secondary btn-sm">Ganti nomor</button>
+          )}
+          {changingPhone && (
+            <form onSubmit={handleChangePhone}>
+              <div className="field" style={{ marginBottom: 10 }}>
+                <label className="label" htmlFor="phonePassword">Password kamu</label>
+                <input id="phonePassword" className="input" type="password" value={phonePassword} onChange={(e) => setPhonePassword(e.target.value)} />
+              </div>
+              <div className="field" style={{ marginBottom: 14 }}>
+                <label className="label" htmlFor="newPhone">Nomor WhatsApp baru</label>
+                <input id="newPhone" className="input" type="text" value={newPhone} onChange={(e) => setNewPhone(e.target.value)} />
+              </div>
+              <button type="submit" className="btn btn-primary btn-sm">Konfirmasi ganti nomor</button>
+            </form>
+          )}
+        </div>
+
+        <div className="card">
+          <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
+            Ganti password akun kamu secara berkala biar tetap aman.
+          </p>
+
+          {!changingPassword && (
+            <button onClick={() => setChangingPassword(true)} className="btn btn-secondary btn-sm">Ganti password</button>
+          )}
+          {changingPassword && (
+            <form onSubmit={handleChangePassword}>
+              <div className="field" style={{ marginBottom: 10 }}>
+                <label className="label" htmlFor="currentPassword">Password lama</label>
+                <input id="currentPassword" className="input" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
+              </div>
+              <div className="field" style={{ marginBottom: 10 }}>
+                <label className="label" htmlFor="newPassword">Password baru</label>
+                <input id="newPassword" className="input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+              </div>
+              <div className="field" style={{ marginBottom: 14 }}>
+                <label className="label" htmlFor="confirmPassword">Ulangi password baru</label>
+                <input id="confirmPassword" className="input" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              </div>
+              <button type="submit" className="btn btn-primary btn-sm">Simpan password baru</button>
+            </form>
+          )}
+        </div>
+
+        {message && <div className="alert alert-success mt-24">{message}</div>}
+        {error && <div className="alert alert-danger mt-24">{error}</div>}
       </div>
-
-      <div className="card">
-        <p className="text-muted" style={{ fontSize: 12.5, marginBottom: 12 }}>
-          Ganti password akun kamu secara berkala biar tetap aman.
-        </p>
-
-        {!changingPassword && (
-          <button onClick={() => setChangingPassword(true)} className="btn btn-secondary btn-sm">Ganti password</button>
-        )}
-        {changingPassword && (
-          <form onSubmit={handleChangePassword}>
-            <div className="field" style={{ marginBottom: 10 }}>
-              <label className="label" htmlFor="currentPassword">Password lama</label>
-              <input id="currentPassword" className="input" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} />
-            </div>
-            <div className="field" style={{ marginBottom: 10 }}>
-              <label className="label" htmlFor="newPassword">Password baru</label>
-              <input id="newPassword" className="input" type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
-            </div>
-            <div className="field" style={{ marginBottom: 14 }}>
-              <label className="label" htmlFor="confirmPassword">Ulangi password baru</label>
-              <input id="confirmPassword" className="input" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-            </div>
-            <button type="submit" className="btn btn-primary btn-sm">Simpan password baru</button>
-          </form>
-        )}
-      </div>
-
-      {message && <div className="alert alert-success mt-24">{message}</div>}
-      {error && <div className="alert alert-danger mt-24">{error}</div>}
     </div>
   );
 }

@@ -39,27 +39,29 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page" style={{ paddingTop: 64 }}>
+    <div>
       <Header />
-      <h1 className="page-title">Masuk akun</h1>
-      <p className="page-subtitle">Pakai nomor WhatsApp dan password akun kamu.</p>
+      <div className="page">
+        <h1 className="page-title">Masuk akun</h1>
+        <p className="page-subtitle">Pakai nomor WhatsApp dan password akun kamu.</p>
 
-      <form onSubmit={handleLogin}>
-        <div className="field">
-          <label className="label" htmlFor="phone">Nomor WhatsApp</label>
-          <input id="phone" className="input" type="text" placeholder="0812xxxxxxx"
-            value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </div>
-        <div className="field">
-          <label className="label" htmlFor="password">Password</label>
-          <input id="password" className="input" type="password" placeholder="Password"
-            value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        {error && <div className="alert alert-danger">{error}</div>}
-        <button disabled={loading} className="btn btn-primary btn-full" type="submit">
-          {loading ? 'Memproses...' : 'Masuk'}
-        </button>
-      </form>
+        <form onSubmit={handleLogin}>
+          <div className="field">
+            <label className="label" htmlFor="phone">Nomor WhatsApp</label>
+            <input id="phone" className="input" type="text" placeholder="0812xxxxxxx"
+              value={phone} onChange={(e) => setPhone(e.target.value)} />
+          </div>
+          <div className="field">
+            <label className="label" htmlFor="password">Password</label>
+            <input id="password" className="input" type="password" placeholder="Password"
+              value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <button disabled={loading} className="btn btn-primary btn-full" type="submit">
+            {loading ? 'Memproses...' : 'Masuk'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
