@@ -384,3 +384,45 @@ textarea.input { resize: vertical; font-family: inherit; }
   color: var(--text-secondary);
   margin-bottom: 4px;
 }
+
+/* Navbar blok biru penuh (warna logo Hiswana) */
+.public-nav-bar {
+  background: #355FF7;
+  width: 100%;
+}
+.public-nav-bar .header-word { color: #ffffff; }
+.public-nav-bar .header-sub { color: #DCE5FD; }
+.public-nav-bar .header-mark {
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 4px;
+}
+.public-nav-bar .public-nav-link { color: #DCE5FD; }
+.public-nav-bar .public-nav-link:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+.public-nav-bar .public-nav-link.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.18);
+}
+.public-nav-bar .btn-primary {
+  background: #ffffff;
+  color: #355FF7;
+}
+.public-nav-bar .btn-primary:hover {
+  background: #EEF1FF;
+}
+
+/* Header.js dipakai di dalam kontainer sempit (Login, Dashboard, Profil) -
+   trik "breakout" ini bikin bloknya tetap selebar layar penuh */
+.header-breakout {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 14px 20px;
+  margin-bottom: 24px;
+}
