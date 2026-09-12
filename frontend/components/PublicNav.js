@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { getToken } from '../lib/api';
+import { useRouter } from 'next/navigation';
+import { getToken, clearToken } from '../lib/api';
 
 const LINKS = [
   { href: '/', label: 'Beranda' },
@@ -15,6 +16,7 @@ const LINKS = [
 
 export default function PublicNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -48,6 +50,14 @@ export default function PublicNav() {
         <Link href={loggedIn ? '/dashboard' : '/login'}>
           <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
         </Link>
+        {loggedIn && (
+          <button
+            className="btn btn-secondary btn-sm"
+            onClick={() => { clearToken(); router.push('/'); }}
+          >
+            Keluar
+          </button>
+        )}
       </div>
     </div>
     </div>
