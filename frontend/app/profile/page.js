@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../lib/api';
 import { useAuthGuard } from '../../lib/useAuthGuard';
-import Header from '../../components/Header';
+import PublicNav from '../../components/PublicNav';
 
 export default function ProfilePage() {
   const ready = useAuthGuard();
@@ -75,14 +75,14 @@ export default function ProfilePage() {
   if (!ready) return null;
   if (!owner) return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page text-muted">Memuat...</div>
     </div>
   );
 
   return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page">
         <h1 className="page-title">Edit profil</h1>
         <p className="page-subtitle">Kelola data pribadi kamu.</p>

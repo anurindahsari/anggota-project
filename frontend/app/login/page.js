@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiFetch, setToken, getToken } from '../../lib/api';
-import Header from '../../components/Header';
+import PublicNav from '../../components/PublicNav';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -40,7 +40,7 @@ export default function LoginPage() {
 
   return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page">
         <h1 className="page-title">Masuk akun</h1>
         <p className="page-subtitle">Pakai nomor WhatsApp dan password akun kamu.</p>

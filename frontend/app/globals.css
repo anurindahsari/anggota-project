@@ -389,20 +389,16 @@ textarea.input { resize: vertical; font-family: inherit; }
 .public-nav-bar {
   background: #355FF7;
   width: 100%;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
-  overflow: hidden;
 }
 .public-nav-bar .public-nav {
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
-.public-nav-bar .header-word { color: #ffffff; }
-.public-nav-bar .header-sub { color: #DCE5FD; }
+.public-nav-bar .header-word { color: #355FF7; }
+.public-nav-bar .header-sub { color: #5B7BF0; }
 .public-nav-bar .header-mark {
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 3px;
+  width: 42px;
+  height: 42px;
 }
 .public-nav-bar .public-nav-link { color: #DCE5FD; }
 .public-nav-bar .public-nav-link:hover {
@@ -432,7 +428,10 @@ textarea.input { resize: vertical; font-family: inherit; }
   margin-right: -50vw;
   padding: 10px 20px;
   margin-bottom: 24px;
-  border-bottom-left-radius: 18px;
-  border-bottom-right-radius: 18px;
-  overflow: hidden;
+}
+
+.public-nav-bar .public-nav-brand {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 6px 16px 6px 6px;
 }

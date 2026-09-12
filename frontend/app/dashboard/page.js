@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '../../lib/api';
 import { useAuthGuard } from '../../lib/useAuthGuard';
-import Header from '../../components/Header';
+import PublicNav from '../../components/PublicNav';
 
 export default function DashboardPage() {
   const ready = useAuthGuard();
@@ -21,13 +21,13 @@ export default function DashboardPage() {
   if (!ready) return null;
   if (error) return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page"><div className="alert alert-danger">{error}</div></div>
     </div>
   );
   if (!units) return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page text-muted">Memuat...</div>
     </div>
   );
@@ -37,7 +37,7 @@ export default function DashboardPage() {
 
   return (
     <div>
-      <Header />
+      <PublicNav />
       <div className="page-wide">
         <div style={{ textAlign: 'right', marginBottom: 16 }}>
           <Link href="/events" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
