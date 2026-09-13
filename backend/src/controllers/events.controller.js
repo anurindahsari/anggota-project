@@ -34,14 +34,14 @@ export async function registerForEvent(req, res) {
   const ownerId = req.ownerId;
 
   const { rows: unpaidUnits } = await query(
-    `SELECT bu.business_name, mp.amount_due,
+    `SELECT bu.business_name, COALESCE(bu.standard_amount_due, mp.amount_due) AS amount_due,
             COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'verified'), 0) AS paid
      FROM business_units bu
      CROSS JOIN membership_periods mp
      LEFT JOIN payments p ON p.business_unit_id = bu.id AND p.period_id = mp.id
      WHERE bu.owner_id = $1 AND mp.end_date >= now()
-     GROUP BY bu.id, bu.business_name, mp.amount_due
-     HAVING COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'verified'), 0) < mp.amount_due`,
+     GROUP BY bu.id, bu.business_name, mp.amount_due, bu.standard_amount_due
+     HAVING COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'verified'), 0) < COALESCE(bu.standard_amount_due, mp.amount_due)`,
     [ownerId]
   );
 
