@@ -3,14 +3,19 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch } from '../../lib/api';
+import { useAuthGuard } from '../../lib/useAuthGuard';
 import PublicNav from '../../components/PublicNav';
 
 export default function EventsListPage() {
+  const ready = useAuthGuard();
   const [events, setEvents] = useState(null);
 
   useEffect(() => {
+    if (!ready) return;
     apiFetch('/events/upcoming').then((data) => setEvents(data.events));
-  }, []);
+  }, [ready]);
+
+  if (!ready) return null;
 
   return (
     <div>

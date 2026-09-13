@@ -9,7 +9,7 @@ import {
 } from '../controllers/events.controller.js';
 
 const router = Router();
-router.get('/upcoming', listUpcomingEvents);
+router.get('/upcoming', requireAuth, listUpcomingEvents); // privat - anggota saja
 router.get('/public/:id', getPublicEvent); // tanpa requireAuth, sengaja bisa diakses siapa saja
 router.post('/:id/register', requireAuth, registerForEvent);
 router.post('/checkin', requireAuth, checkinByQr);
