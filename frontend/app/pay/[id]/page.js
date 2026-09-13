@@ -83,11 +83,8 @@ export default function PayPage() {
               <p style={{ fontSize: 13.5, color: 'var(--text-secondary)', marginBottom: 10 }}>
                 Transfer manual ke rekening berikut, lalu upload bukti transfernya di bawah.
               </p>
-              <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>Bank ___ - No. Rek ___</p>
-              <p style={{ fontSize: 13.5, color: 'var(--text-secondary)' }}>a.n. Hiswana Migas DPC Surabaya</p>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 10 }}>
-                (Admin: lengkapi nomor rekening asli di halaman ini)
-              </p>
+              <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>Bank Mandiri - No. Rek 1400082001729</p>
+              <p style={{ fontSize: 13.5, color: 'var(--text-secondary)' }}>a.n. Hiswana Migas</p>
             </div>
 
             <div className="card" style={{ marginBottom: 16, opacity: 0.55 }}>
