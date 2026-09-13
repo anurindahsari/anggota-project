@@ -123,13 +123,13 @@ export async function getUnitDetail(req, res) {
 // PATCH /owners/me/units/:id  { address, city, contactEmail }
 // Sengaja cuma alamat, kota, email yang bisa diedit mandiri - nama usaha/tipe/nomor unit tetap terkunci (data resmi).
 export async function updateUnit(req, res) {
-  const { address, city, contactEmail } = req.body;
+  const { address, city, contactEmail, activeWhatsapp } = req.body;
   const { rows } = await query('SELECT id FROM business_units WHERE id = $1 AND owner_id = $2', [req.params.id, req.ownerId]);
   if (rows.length === 0) return res.status(404).json({ error: 'Badan usaha tidak ditemukan.' });
 
   await query(
-    `UPDATE business_units SET address = $1, city = $2, contact_email = $3 WHERE id = $4`,
-    [address || null, city || null, contactEmail || null, req.params.id]
+    `UPDATE business_units SET address = $1, city = $2, contact_email = $3, active_whatsapp = $4 WHERE id = $5`,
+    [address || null, city || null, contactEmail || null, activeWhatsapp || null, req.params.id]
   );
   res.json({ message: 'Data badan usaha diperbarui.' });
 }

@@ -17,6 +17,7 @@ export default function UnitDetailPage() {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [contactEmail, setContactEmail] = useState('');
+  const [activeWhatsapp, setActiveWhatsapp] = useState('');
 
   useEffect(() => {
     if (!ready) return;
@@ -26,6 +27,7 @@ export default function UnitDetailPage() {
         setAddress(data.unit.address || '');
         setCity(data.unit.city || '');
         setContactEmail(data.unit.contact_email || '');
+        setActiveWhatsapp(data.unit.active_whatsapp || '');
       })
       .catch((err) => setError(err.message));
   }, [ready, id]);
@@ -36,11 +38,11 @@ export default function UnitDetailPage() {
     try {
       await apiFetch(`/owners/me/units/${id}`, {
         method: 'PATCH',
-        body: JSON.stringify({ address, city, contactEmail }),
+        body: JSON.stringify({ address, city, contactEmail, activeWhatsapp }),
       });
       setMessage('Data tersimpan.');
       setEditing(false);
-      setUnit({ ...unit, address, city, contact_email: contactEmail });
+      setUnit({ ...unit, address, city, contact_email: contactEmail, active_whatsapp: activeWhatsapp });
     } catch (err) {
       setError(err.message);
     }
@@ -78,7 +80,8 @@ export default function UnitDetailPage() {
                 <>
                   <p style={{ fontSize: 14, marginBottom: 8 }}><strong>Alamat:</strong> {unit.address || '(belum diisi)'}</p>
                   <p style={{ fontSize: 14, marginBottom: 8 }}><strong>Kota/Kabupaten:</strong> {unit.city || '(belum diisi)'}</p>
-                  <p style={{ fontSize: 14, marginBottom: 14 }}><strong>Email:</strong> {unit.contact_email || '(belum diisi)'}</p>
+                  <p style={{ fontSize: 14, marginBottom: 8 }}><strong>Email:</strong> {unit.contact_email || '(belum diisi)'}</p>
+                  <p style={{ fontSize: 14, marginBottom: 14 }}><strong>No WhatsApp Aktif:</strong> {unit.active_whatsapp || '(belum diisi)'}</p>
                   <button onClick={() => setEditing(true)} className="btn btn-secondary btn-sm">Ubah data</button>
                 </>
               ) : (
@@ -91,9 +94,13 @@ export default function UnitDetailPage() {
                     <label className="label" htmlFor="city">Kota/Kabupaten</label>
                     <input id="city" className="input" type="text" value={city} onChange={(e) => setCity(e.target.value)} />
                   </div>
-                  <div className="field" style={{ marginBottom: 14 }}>
+                  <div className="field" style={{ marginBottom: 10 }}>
                     <label className="label" htmlFor="contactEmail">Email</label>
                     <input id="contactEmail" className="input" type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} />
+                  </div>
+                  <div className="field" style={{ marginBottom: 14 }}>
+                    <label className="label" htmlFor="activeWhatsapp">No WhatsApp Aktif</label>
+                    <input id="activeWhatsapp" className="input" type="text" placeholder="0812xxxxxxx" value={activeWhatsapp} onChange={(e) => setActiveWhatsapp(e.target.value)} />
                   </div>
                   <button type="submit" className="btn btn-primary btn-sm" style={{ marginRight: 8 }}>Simpan</button>
                   <button type="button" onClick={() => setEditing(false)} className="btn btn-secondary btn-sm">Batal</button>

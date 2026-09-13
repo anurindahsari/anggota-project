@@ -58,7 +58,7 @@ export default function DashboardPage() {
 
         <div className="stat-grid">
           <div className="stat-card">
-            <div className="stat-label">Total unit</div>
+            <div className="stat-label">Jumlah badan usaha</div>
             <div className="stat-value">{units.length}</div>
           </div>
           <div className="stat-card">
@@ -71,7 +71,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Status per unit</h2>
+        <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Status per badan usaha</h2>
         <div className="list">
           {units.map((u) => (
             <div className="list-item" key={u.businessUnitId}>
