@@ -74,19 +74,19 @@ export default function DashboardPage() {
         <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 12 }}>Status per unit</h2>
         <div className="list">
           {units.map((u) => (
-            <Link href={`/unit/${u.businessUnitId}`} key={u.businessUnitId} style={{ display: 'block' }}>
-              <div className="list-item">
-                <div>
-                  <div className="list-item-title">{u.businessName}</div>
-                  <div className="list-item-meta">{u.unitNumber || '-'} · {u.period}</div>
-                </div>
-                {u.status === 'lunas' ? (
-                  <span className="badge badge-success">Lunas</span>
-                ) : (
-                  <span className="badge badge-danger">Kurang Rp{u.shortfall.toLocaleString('id-ID')}</span>
-                )}
-              </div>
-            </Link>
+            <div className="list-item" key={u.businessUnitId}>
+              <Link href={`/unit/${u.businessUnitId}`} style={{ flex: 1, minWidth: 0 }}>
+                <div className="list-item-title">{u.businessName}</div>
+                <div className="list-item-meta">{u.unitNumber || '-'} · {u.period}</div>
+              </Link>
+              {u.status === 'lunas' ? (
+                <span className="badge badge-success">Lunas</span>
+              ) : (
+                <Link href={`/pay/${u.businessUnitId}?periodId=${u.periodId}&amount=${u.shortfall}&name=${encodeURIComponent(u.businessName)}`}>
+                  <button className="btn btn-primary btn-sm">Bayar Rp{u.shortfall.toLocaleString('id-ID')}</button>
+                </Link>
+              )}
+            </div>
           ))}
         </div>
       </div>
