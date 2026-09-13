@@ -21,6 +21,7 @@ export default function PublicNav() {
   }, [pathname]);
 
   return (
+    <div className="public-nav-shell">
     <div className="public-nav">
       <Link href="/" className="public-nav-brand">
         <img src="/logo.png" alt="Hiswana Migas" className="header-mark" />
@@ -47,6 +48,7 @@ export default function PublicNav() {
           <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
         </Link>
       </div>
+    </div>
     </div>
   );
 }
