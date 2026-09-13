@@ -21,6 +21,13 @@ export default function PayPage() {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState('');
   const [done, setDone] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  function handleCopyAccount() {
+    navigator.clipboard.writeText('1400082001729');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -83,7 +90,12 @@ export default function PayPage() {
               <p style={{ fontSize: 13.5, color: 'var(--text-secondary)', marginBottom: 10 }}>
                 Transfer manual ke rekening berikut, lalu upload bukti transfernya di bawah.
               </p>
-              <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>Bank Mandiri - No. Rek 1400082001729</p>
+              <div className="row-between" style={{ marginBottom: 2 }}>
+                <p style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>Bank Mandiri - No. Rek 1400082001729</p>
+                <button type="button" onClick={handleCopyAccount} className="btn btn-secondary btn-sm">
+                  {copied ? 'Tersalin!' : 'Salin'}
+                </button>
+              </div>
               <p style={{ fontSize: 13.5, color: 'var(--text-secondary)' }}>a.n. Hiswana Migas</p>
             </div>
 

@@ -54,7 +54,7 @@ export default function DashboardPage() {
         </div>
 
         <h1 className="page-title">Dashboard</h1>
-        <p className="page-subtitle">Status iuran seluruh unit usaha kamu. Klik salah satu untuk lihat detail & ubah data.</p>
+        <p className="page-subtitle">Status iuran seluruh badan usaha kamu. Klik salah satu untuk lihat detail & ubah data.</p>
 
         <div className="stat-grid">
           <div className="stat-card">
