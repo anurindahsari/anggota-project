@@ -30,21 +30,23 @@ export default function PublicNav() {
         </div>
       </Link>
 
-      <nav className="public-nav-links">
-        {LINKS.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={`public-nav-link ${pathname === link.href ? 'active' : ''}`}
-          >
-            {link.label}
-          </Link>
-        ))}
-      </nav>
+      <div className="public-nav-right">
+        <nav className="public-nav-links">
+          {LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`public-nav-link ${pathname === link.href ? 'active' : ''}`}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-      <Link href={loggedIn ? '/dashboard' : '/login'} style={{ marginLeft: 'auto' }}>
-        <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
-      </Link>
+        <Link href={loggedIn ? '/dashboard' : '/login'}>
+          <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -438,9 +438,12 @@ textarea.input { resize: vertical; font-family: inherit; }
 
 /* public-nav responsif (struktur baru, putih polos) */
 @media (max-width: 900px) {
-  .public-nav-links {
+  .public-nav-right {
     flex: 1 1 100%;
-    order: 3;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .public-nav-links {
     justify-content: center;
   }
 }
