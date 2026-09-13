@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
-import Header from '../../../components/Header';
+import PublicNav from '../../../components/PublicNav';
 
 export default function EventDetailPage() {
   const ready = useAuthGuard();
@@ -32,8 +32,9 @@ export default function EventDetailPage() {
   if (!ready) return null;
 
   return (
-    <div className="page">
-      <Header />
+    <div>
+      <PublicNav />
+      <div className="page">
       <h1 className="page-title">Daftar event</h1>
       <p className="page-subtitle">Semua unit usaha kamu harus lunas dulu untuk mendapat tiket.</p>
 
@@ -65,6 +66,7 @@ export default function EventDetailPage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }
