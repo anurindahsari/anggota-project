@@ -37,8 +37,9 @@ export default function AdminDashboardPage() {
   const lunasPct = currentPeriod ? Math.round((currentPeriod.units_lunas / currentPeriod.total_units) * 100) : 0;
 
   return (
-    <div className="page-wide">
+    <div>
       <PublicNav />
+      <div className="page-wide">
       <h1 className="page-title">Dashboard admin</h1>
       <p className="page-subtitle">Ringkasan keanggotaan dan status iuran.</p>
 
@@ -149,6 +150,7 @@ export default function AdminDashboardPage() {
           </p>
         </div>
       )}
+    </div>
     </div>
   );
 }

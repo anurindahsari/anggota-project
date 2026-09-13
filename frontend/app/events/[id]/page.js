@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import { apiFetch } from '../../../lib/api';
@@ -34,6 +35,11 @@ export default function EventDetailPage() {
   return (
     <div>
       <PublicNav />
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
+        <Link href="/events" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
+          ← Kembali ke Daftar Acara
+        </Link>
+      </div>
       <div className="page">
       <h1 className="page-title">Daftar event</h1>
       <p className="page-subtitle">Semua unit usaha kamu harus lunas dulu untuk mendapat tiket.</p>

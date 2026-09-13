@@ -146,13 +146,14 @@ export default function KelolaAnggotaPage() {
   if (!ready) return null;
 
   return (
-    <div className="page-wide">
+    <div>
       <PublicNav />
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
         <Link href="/admin" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
           ← Kembali ke Dashboard Admin
         </Link>
       </div>
+      <div className="page-wide">
       <h1 className="page-title">Kelola data anggota</h1>
       <p className="page-subtitle">Edit data pemilik dan unit usaha langsung dari sini — tidak perlu import ulang Excel.</p>
 
@@ -216,6 +217,7 @@ export default function KelolaAnggotaPage() {
         ))}
         {owners && owners.length === 0 && <div className="text-muted">Tidak ada hasil.</div>}
       </div>
+    </div>
     </div>
   );
 }

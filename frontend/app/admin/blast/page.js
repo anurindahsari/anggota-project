@@ -36,13 +36,14 @@ export default function BlastAdminPage() {
   if (!ready) return null;
 
   return (
-    <div className="page">
+    <div>
       <PublicNav />
       <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
         <Link href="/admin" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
           ← Kembali ke Dashboard Admin
         </Link>
       </div>
+      <div className="page">
       <h1 className="page-title">Kirim info ke anggota</h1>
       <p className="page-subtitle">Blast WhatsApp ke anggota terpilih.</p>
 
@@ -78,6 +79,7 @@ export default function BlastAdminPage() {
           {loading ? 'Mengirim...' : 'Kirim sekarang'}
         </button>
       </form>
+    </div>
     </div>
   );
 }
