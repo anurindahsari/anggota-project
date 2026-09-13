@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
-import { getToken, clearToken } from '../lib/api';
+import { getToken } from '../lib/api';
 
 const LINKS = [
   { href: '/', label: 'Beranda' },
@@ -15,7 +14,6 @@ const LINKS = [
 
 export default function PublicNav() {
   const pathname = usePathname();
-  const router = useRouter();
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -23,7 +21,6 @@ export default function PublicNav() {
   }, [pathname]);
 
   return (
-    <div className="public-nav-bar">
     <div className="public-nav">
       <Link href="/" className="public-nav-brand">
         <img src="/logo.png" alt="Hiswana Migas" className="header-mark" />
@@ -33,25 +30,21 @@ export default function PublicNav() {
         </div>
       </Link>
 
-      <div className="public-nav-right">
-        <nav className="public-nav-links">
-          {LINKS.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`public-nav-link ${pathname === link.href ? 'active' : ''}`}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
+      <nav className="public-nav-links">
+        {LINKS.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`public-nav-link ${pathname === link.href ? 'active' : ''}`}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
 
-        <Link href={loggedIn ? '/dashboard' : '/login'}>
-          <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
-        </Link>
-
-      </div>
-    </div>
+      <Link href={loggedIn ? '/dashboard' : '/login'} style={{ marginLeft: 'auto' }}>
+        <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
+      </Link>
     </div>
   );
 }
