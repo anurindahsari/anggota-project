@@ -229,7 +229,7 @@ textarea.input { resize: vertical; font-family: inherit; }
 .public-nav-shell {
   width: 100%;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(53, 95, 247, 0.12);
+  box-shadow: 0 6px 16px rgba(53, 95, 247, 0.16);
 }
 .public-nav {
   display: flex;
@@ -238,7 +238,7 @@ textarea.input { resize: vertical; font-family: inherit; }
   gap: 20px;
   max-width: 960px;
   margin: 0 auto;
-  padding: 20px 20px;
+  padding: 10px 20px;
   flex-wrap: wrap;
 }
 .public-nav-brand { display: flex; align-items: center; gap: 10px; }
