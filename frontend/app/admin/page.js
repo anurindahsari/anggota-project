@@ -73,13 +73,58 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="row" style={{ marginBottom: 28, flexWrap: 'wrap' }}>
-        <button onClick={handleExport} className="btn btn-secondary btn-sm">Export rekap CSV</button>
-        <Link href="/admin/anggota"><button className="btn btn-secondary btn-sm">Kelola data anggota</button></Link>
-        <Link href="/admin/pembayaran"><button className="btn btn-secondary btn-sm">Approve pembayaran</button></Link>
-        <Link href="/admin/blast"><button className="btn btn-secondary btn-sm">Kirim blast WA</button></Link>
-        <Link href="/admin/acara/tambah"><button className="btn btn-secondary btn-sm">Tambah acara</button></Link>
-        <Link href="/galeri/tambah"><button className="btn btn-secondary btn-sm">Tambah postingan Galeri</button></Link>
+      <div style={{ marginBottom: 28 }}>
+        <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 10 }}>
+          Data & Keuangan
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12, marginBottom: 20 }}>
+          <Link href="/admin/anggota">
+            <div className="card" style={{ cursor: 'pointer' }}>
+              <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Kelola data anggota</div>
+              <div className="text-secondary" style={{ fontSize: 13 }}>Edit data pemilik & unit usaha</div>
+            </div>
+          </Link>
+          <Link href="/admin/pembayaran">
+            <div className="card" style={{ cursor: 'pointer' }}>
+              <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Approve pembayaran</div>
+              <div className="text-secondary" style={{ fontSize: 13 }}>Verifikasi bukti transfer manual</div>
+            </div>
+          </Link>
+          <div className="card" style={{ cursor: 'pointer' }} onClick={handleExport}>
+            <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Export rekap CSV</div>
+            <div className="text-secondary" style={{ fontSize: 13 }}>Unduh laporan pembayaran</div>
+          </div>
+        </div>
+
+        <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 10 }}>
+          Konten
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12, marginBottom: 20 }}>
+          <Link href="/admin/acara/tambah">
+            <div className="card" style={{ cursor: 'pointer' }}>
+              <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Tambah acara</div>
+              <div className="text-secondary" style={{ fontSize: 13 }}>Buat acara baru untuk anggota</div>
+            </div>
+          </Link>
+          <Link href="/galeri/tambah">
+            <div className="card" style={{ cursor: 'pointer' }}>
+              <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Tambah postingan Galeri</div>
+              <div className="text-secondary" style={{ fontSize: 13 }}>Upload dokumentasi kegiatan</div>
+            </div>
+          </Link>
+        </div>
+
+        <h2 style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 10 }}>
+          Komunikasi
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
+          <Link href="/admin/blast">
+            <div className="card" style={{ cursor: 'pointer' }}>
+              <div style={{ fontWeight: 600, fontSize: 14.5, marginBottom: 4 }}>Kirim blast WA</div>
+              <div className="text-secondary" style={{ fontSize: 13 }}>Info massal ke anggota terpilih</div>
+            </div>
+          </Link>
+        </div>
       </div>
 
       {flagged && (flagged.owners.length > 0 || flagged.businessUnits.length > 0) && (

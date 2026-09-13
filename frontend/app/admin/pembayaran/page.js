@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
@@ -42,6 +43,11 @@ export default function ApprovePembayaranPage() {
   return (
     <div>
       <PublicNav />
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
+        <Link href="/admin" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
+          ← Kembali ke Dashboard Admin
+        </Link>
+      </div>
       <div className="page-wide">
         <h1 className="page-title">Approve pembayaran</h1>
         <p className="page-subtitle">Transfer manual yang menunggu verifikasi.</p>

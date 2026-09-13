@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
@@ -147,6 +148,11 @@ export default function KelolaAnggotaPage() {
   return (
     <div className="page-wide">
       <PublicNav />
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
+        <Link href="/admin" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
+          ← Kembali ke Dashboard Admin
+        </Link>
+      </div>
       <h1 className="page-title">Kelola data anggota</h1>
       <p className="page-subtitle">Edit data pemilik dan unit usaha langsung dari sini — tidak perlu import ulang Excel.</p>
 

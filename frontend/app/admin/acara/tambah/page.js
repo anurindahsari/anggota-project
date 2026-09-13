@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiFetch } from '../../../../lib/api';
@@ -41,6 +42,11 @@ export default function TambahAcaraPage() {
   return (
     <div>
       <PublicNav />
+      <div style={{ maxWidth: 960, margin: '0 auto', padding: '16px 20px 0' }}>
+        <Link href="/admin" className="text-secondary" style={{ fontSize: 13.5, fontWeight: 500 }}>
+          ← Kembali ke Dashboard Admin
+        </Link>
+      </div>
       <div className="page">
         <h1 className="page-title">Tambah acara</h1>
         <p className="page-subtitle">Khusus admin.</p>
