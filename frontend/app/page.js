@@ -35,21 +35,29 @@ export default function HomePage() {
         </div>
         <div className="hero-photo">
           {current ? (
-            <>
+            <div style={{ position: 'relative', borderRadius: 18, overflow: 'hidden' }}>
               <img
                 src={current.cover_image_url}
                 alt={current.title}
                 className="hero-photo-img"
               />
-              <div style={{ marginTop: 10 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>{current.title}</div>
+              <div style={{
+                position: 'absolute',
+                left: 14,
+                right: 14,
+                bottom: 14,
+                background: 'rgba(255, 255, 255, 0.82)',
+                borderRadius: 12,
+                padding: '10px 14px',
+              }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{current.title}</div>
                 {current.caption && (
                   <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                     {current.caption.length > 90 ? current.caption.slice(0, 90) + '…' : current.caption}
                   </div>
                 )}
               </div>
-            </>
+            </div>
           ) : (
             <img
               src="/hero-refinery.jpg"
