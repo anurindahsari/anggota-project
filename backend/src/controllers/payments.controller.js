@@ -104,3 +104,17 @@ export async function approveManualPaymentHandler(req, res) {
 
   res.json({ message: 'Pembayaran dikonfirmasi lunas.' });
 }
+
+// GET /payments/pending  (admin only) - daftar transfer manual yang menunggu verifikasi
+export async function listPendingPaymentsHandler(req, res) {
+  const { rows } = await query(
+    `SELECT p.id, p.amount, p.method, p.proof_url, p.created_at,
+            bu.business_name, bu.business_type, o.full_name AS owner_name
+     FROM payments p
+     JOIN business_units bu ON bu.id = p.business_unit_id
+     JOIN owners o ON o.id = bu.owner_id
+     WHERE p.status = 'pending'
+     ORDER BY p.created_at ASC`
+  );
+  res.json({ payments: rows });
+}

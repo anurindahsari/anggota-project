@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
-import Header from '../../../components/Header';
+import PublicNav from '../../../components/PublicNav';
 
 function OwnerEditForm({ owner, onSaved, onCancel }) {
   const [fullName, setFullName] = useState(owner.full_name);
@@ -146,7 +146,7 @@ export default function KelolaAnggotaPage() {
 
   return (
     <div className="page-wide">
-      <Header />
+      <PublicNav />
       <h1 className="page-title">Kelola data anggota</h1>
       <p className="page-subtitle">Edit data pemilik dan unit usaha langsung dari sini — tidak perlu import ulang Excel.</p>
 

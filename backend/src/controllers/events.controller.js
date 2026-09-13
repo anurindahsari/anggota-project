@@ -106,3 +106,17 @@ export async function submitFeedback(req, res) {
 
   res.json({ message: 'Terima kasih atas feedback-nya.' });
 }
+
+// POST /events  (admin only)  { title, description, eventDate, location, requiresPaidMembership, isPublic }
+export async function createEventAdmin(req, res) {
+  const { title, description, eventDate, location, requiresPaidMembership, isPublic } = req.body;
+  if (!title || !eventDate) return res.status(400).json({ error: 'Judul dan tanggal wajib diisi.' });
+
+  const { rows } = await query(
+    `INSERT INTO events (title, description, event_date, location, requires_paid_membership, is_public, created_by)
+     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
+    [title, description || null, eventDate, location || null, requiresPaidMembership !== false, !!isPublic, req.ownerId]
+  );
+
+  res.json({ message: 'Acara berhasil dibuat.', eventId: rows[0].id });
+}

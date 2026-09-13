@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { apiFetch, getToken } from '../../lib/api';
 import { useAuthGuard } from '../../lib/useAuthGuard';
-import Header from '../../components/Header';
+import PublicNav from '../../components/PublicNav';
 
 export default function AdminDashboardPage() {
   const ready = useAuthGuard();
@@ -38,7 +38,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="page-wide">
-      <Header />
+      <PublicNav />
       <h1 className="page-title">Dashboard admin</h1>
       <p className="page-subtitle">Ringkasan keanggotaan dan status iuran.</p>
 
@@ -73,10 +73,13 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
-      <div className="row" style={{ marginBottom: 28 }}>
+      <div className="row" style={{ marginBottom: 28, flexWrap: 'wrap' }}>
         <button onClick={handleExport} className="btn btn-secondary btn-sm">Export rekap CSV</button>
         <Link href="/admin/anggota"><button className="btn btn-secondary btn-sm">Kelola data anggota</button></Link>
+        <Link href="/admin/pembayaran"><button className="btn btn-secondary btn-sm">Approve pembayaran</button></Link>
         <Link href="/admin/blast"><button className="btn btn-secondary btn-sm">Kirim blast WA</button></Link>
+        <Link href="/admin/acara/tambah"><button className="btn btn-secondary btn-sm">Tambah acara</button></Link>
+        <Link href="/galeri/tambah"><button className="btn btn-secondary btn-sm">Tambah postingan Galeri</button></Link>
       </div>
 
       {flagged && (flagged.owners.length > 0 || flagged.businessUnits.length > 0) && (

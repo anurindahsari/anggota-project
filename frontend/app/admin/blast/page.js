@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { apiFetch } from '../../../lib/api';
 import { useAuthGuard } from '../../../lib/useAuthGuard';
-import Header from '../../../components/Header';
+import PublicNav from '../../../components/PublicNav';
 
 export default function BlastAdminPage() {
   const ready = useAuthGuard();
@@ -36,7 +36,7 @@ export default function BlastAdminPage() {
 
   return (
     <div className="page">
-      <Header />
+      <PublicNav />
       <h1 className="page-title">Kirim info ke anggota</h1>
       <p className="page-subtitle">Blast WhatsApp ke anggota terpilih.</p>
 
