@@ -1,41 +1,66 @@
-import Link from 'next/link';
+'use client';
+
+import { useEffect, useState } from 'react';
 import PublicNav from '../components/PublicNav';
+import { apiFetch } from '../lib/api';
 
 export default function HomePage() {
+  const [posts, setPosts] = useState([]);
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    apiFetch('/gallery')
+      .then((data) => setPosts((data.posts || []).filter((p) => p.cover_image_url).slice(0, 8)))
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    if (posts.length < 2) return;
+    const timer = setInterval(() => setIndex((i) => (i + 1) % posts.length), 4000);
+    return () => clearInterval(timer);
+  }, [posts]);
+
+  const current = posts[index];
+
   return (
     <div>
       <PublicNav />
-
       <div className="hero">
         <div className="hero-text">
         <p className="hero-eyebrow">Portal anggota</p>
         <h1>Hiswana Migas<br />DPC Surabaya</h1>
         <p>
-          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi — untuk seluruh anggota SPBU, agen LPG (PSO & non-PSO), SP(P)BE, transportir BBM/elpiji/avtur, retester, dan pelumas di wilayah kerja DPC Surabaya.
+          Satu tempat untuk cek status iuran, bayar, dan ikut acara organisasi — untuk seluruh anggota SPBU, agen LPG (PSO dan non-PSO), SP(P)BE, transportir BBM/elpiji/avtur, retester, dan pelumas se-DPC Surabaya (Surabaya, Sidoarjo, Gresik, Mojokerto, Lamongan, Bojonegoro, Tuban, dan Jombang).
         </p>
         </div>
         <div className="hero-photo">
-          <img
-            src="/hero-refinery.jpg"
-            alt="Kilang minyak dan gas dari udara"
-            className="hero-photo-img"
-          />
-          <p style={{ fontSize: 11, color: 'var(--text-muted)', textAlign: 'right', marginTop: 6, marginBottom: 0 }}>
-            Foto oleh{' '}
-            <a
-              href="https://www.magnific.com/free-photo/aerial-view-gas-oil-refinery-oil-industry_23404841.htm"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ color: 'var(--text-secondary)', textDecoration: 'underline' }}
-            >
-              tawatchai07
-            </a>{' '}
-            di Freepik
-          </p>
+          {current ? (
+            <>
+              <img
+                src={current.cover_image_url}
+                alt={current.title}
+                className="hero-photo-img"
+              />
+              <div style={{ marginTop: 10 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 2 }}>{current.title}</div>
+                {current.caption && (
+                  <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+                    {current.caption.length > 90 ? current.caption.slice(0, 90) + '…' : current.caption}
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <img
+              src="/hero-refinery.jpg"
+              alt="Kilang minyak dan gas dari udara"
+              className="hero-photo-img"
+            />
+          )}
         </div>
       </div>
 
-      <div className="feature-section">
+      <div className="feature-section" style={{ marginTop: 20 }}>
         <div className="feature-grid">
           <div className="feature-card">
             <div className="feature-icon">1</div>
