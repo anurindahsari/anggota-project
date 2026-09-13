@@ -13,6 +13,7 @@ export default function AdminDashboardPage() {
   const [error, setError] = useState('');
   const [breakdown, setBreakdown] = useState(null);
   const [showBreakdown, setShowBreakdown] = useState(false);
+  const [expandedTypes, setExpandedTypes] = useState({});
 
   useEffect(() => {
     if (!ready) return;
@@ -73,17 +74,32 @@ export default function AdminDashboardPage() {
               if (!grouped[b.business_type]) grouped[b.business_type] = [];
               grouped[b.business_type].push(b);
             });
-            return Object.entries(grouped).map(([type, rows]) => (
-              <div key={type} style={{ marginBottom: 14 }}>
-                <div style={{ fontWeight: 600, fontSize: 13.5, marginBottom: 6 }}>{type}</div>
-                {rows.map((r, i) => (
-                  <div key={i} className="row-between" style={{ fontSize: 13, padding: '3px 0' }}>
-                    <span className="text-secondary">{r.city}</span>
-                    <span>{r.total}</span>
+            return Object.entries(grouped).map(([type, rows]) => {
+              const total = rows.reduce((sum, r) => sum + Number(r.total), 0);
+              const isOpen = !!expandedTypes[type];
+              return (
+                <div key={type} style={{ marginBottom: 10, borderBottom: '1px solid var(--border)', paddingBottom: 10 }}>
+                  <div
+                    className="row-between"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => setExpandedTypes((prev) => ({ ...prev, [type]: !prev[type] }))}
+                  >
+                    <span style={{ fontWeight: 600, fontSize: 13.5 }}>{type}</span>
+                    <span className="text-secondary" style={{ fontSize: 13 }}>{total} unit {isOpen ? '▲' : '▼'}</span>
                   </div>
-                ))}
-              </div>
-            ));
+                  {isOpen && (
+                    <div style={{ marginTop: 8 }}>
+                      {rows.map((r, i) => (
+                        <div key={i} className="row-between" style={{ fontSize: 13, padding: '3px 0' }}>
+                          <span className="text-secondary">{r.city}</span>
+                          <span>{r.total}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            });
           })()}
         </div>
       )}
