@@ -6,9 +6,7 @@ export async function getDashboardSummary(req, res) {
   const { rows: totals } = await query(`
     SELECT
       (SELECT COUNT(*) FROM owners) AS total_owners,
-      (SELECT COUNT(*) FROM business_units) AS total_units,
-      (SELECT COUNT(*) FROM owners WHERE data_issues != '{}') AS owners_flagged,
-      (SELECT COUNT(*) FROM business_units WHERE data_issues != '{}') AS units_flagged
+      (SELECT COUNT(*) FROM business_units) AS total_units
   `);
 
   // Status lunas/kurang dihitung untuk periode iuran yang sedang berjalan
@@ -20,7 +18,7 @@ export async function getDashboardSummary(req, res) {
         WHERE COALESCE((
           SELECT SUM(p.amount) FROM payments p
           WHERE p.business_unit_id = bu.id AND p.period_id = mp.id AND p.status = 'verified'
-        ), 0) >= mp.amount_due
+        ), 0) >= COALESCE(bu.standard_amount_due, mp.amount_due)
       ) AS units_lunas
     FROM membership_periods mp
     CROSS JOIN business_units bu
@@ -161,4 +159,16 @@ export async function updateBusinessUnitAdmin(req, res) {
   );
 
   res.json({ message: 'Data unit usaha diperbarui.' });
+}
+
+// GET /admin/business-units/breakdown
+// Rincian jumlah badan usaha per bidang usaha & kota, buat diklik dari kartu "Total unit usaha".
+export async function getBusinessUnitBreakdown(req, res) {
+  const { rows } = await query(`
+    SELECT business_type, COALESCE(NULLIF(city, ''), '(kota belum diisi)') AS city, COUNT(*) AS total
+    FROM business_units
+    GROUP BY business_type, city
+    ORDER BY business_type, total DESC
+  `);
+  res.json({ breakdown: rows });
 }

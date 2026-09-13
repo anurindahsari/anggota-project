@@ -11,6 +11,8 @@ export default function AdminDashboardPage() {
   const [summary, setSummary] = useState(null);
   const [flagged, setFlagged] = useState(null);
   const [error, setError] = useState('');
+  const [breakdown, setBreakdown] = useState(null);
+  const [showBreakdown, setShowBreakdown] = useState(false);
 
   useEffect(() => {
     if (!ready) return;
@@ -18,6 +20,14 @@ export default function AdminDashboardPage() {
       .then(([s, f]) => { setSummary(s); setFlagged(f); })
       .catch((err) => setError(err.message));
   }, [ready]);
+
+  async function handleShowBreakdown() {
+    setShowBreakdown((v) => !v);
+    if (!breakdown) {
+      const data = await apiFetch('/admin/business-units/breakdown');
+      setBreakdown(data.breakdown);
+    }
+  }
 
   async function handleExport() {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
@@ -43,24 +53,40 @@ export default function AdminDashboardPage() {
       <h1 className="page-title">Dashboard admin</h1>
       <p className="page-subtitle">Ringkasan keanggotaan dan status iuran.</p>
 
-      <div className="stat-grid stat-grid-2">
+      <div className="stat-grid stat-grid-2" style={{ marginBottom: 8 }}>
         <div className="stat-card">
           <div className="stat-label">Total pemilik</div>
           <div className="stat-value">{totals.total_owners}</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-label">Total unit usaha</div>
+        <div className="stat-card" style={{ cursor: 'pointer' }} onClick={handleShowBreakdown}>
+          <div className="stat-label">Total unit usaha (klik untuk rincian)</div>
           <div className="stat-value">{totals.total_units}</div>
         </div>
-        <div className="stat-card">
-          <div className="stat-label">Data owner kurang lengkap</div>
-          <div className="stat-value danger">{totals.owners_flagged}</div>
-        </div>
-        <div className="stat-card">
-          <div className="stat-label">Data unit kurang lengkap</div>
-          <div className="stat-value danger">{totals.units_flagged}</div>
-        </div>
       </div>
+
+      {showBreakdown && (
+        <div className="card" style={{ marginBottom: 20 }}>
+          {!breakdown && <div className="text-muted" style={{ fontSize: 13 }}>Memuat rincian...</div>}
+          {breakdown && (() => {
+            const grouped = {};
+            breakdown.forEach((b) => {
+              if (!grouped[b.business_type]) grouped[b.business_type] = [];
+              grouped[b.business_type].push(b);
+            });
+            return Object.entries(grouped).map(([type, rows]) => (
+              <div key={type} style={{ marginBottom: 14 }}>
+                <div style={{ fontWeight: 600, fontSize: 13.5, marginBottom: 6 }}>{type}</div>
+                {rows.map((r, i) => (
+                  <div key={i} className="row-between" style={{ fontSize: 13, padding: '3px 0' }}>
+                    <span className="text-secondary">{r.city}</span>
+                    <span>{r.total}</span>
+                  </div>
+                ))}
+              </div>
+            ));
+          })()}
+        </div>
+      )}
 
       {currentPeriod && (
         <div className="card" style={{ marginBottom: 20 }}>
