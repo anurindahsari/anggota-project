@@ -67,11 +67,11 @@ export default function HomePage() {
               )}
               <div style={{
                 position: 'absolute',
-                left: 10,
-                right: 10,
-                bottom: 10,
+                left: 0,
+                right: 0,
+                bottom: 22,
                 background: 'rgba(255, 255, 255, 0.82)',
-                padding: '6px 10px',
+                padding: '6px 14px',
               }}>
                 <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 1 }}>{current.title}</div>
                 {current.caption && (
