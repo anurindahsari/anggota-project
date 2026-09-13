@@ -8,7 +8,6 @@ import { getToken, clearToken } from '../lib/api';
 
 const LINKS = [
   { href: '/', label: 'Beranda' },
-  { href: '/dashboard', label: 'Keanggotaan' },
   { href: '/events', label: 'Acara' },
   { href: '/panduan', label: 'Panduan' },
   { href: '/kontak', label: 'Kontak' },
@@ -50,14 +49,7 @@ export default function PublicNav() {
         <Link href={loggedIn ? '/dashboard' : '/login'}>
           <button className="btn btn-primary btn-sm">{loggedIn ? 'Dashboard' : 'Masuk'}</button>
         </Link>
-        {loggedIn && (
-          <button
-            className="btn btn-secondary btn-sm"
-            onClick={() => { clearToken(); router.push('/'); }}
-          >
-            Keluar
-          </button>
-        )}
+
       </div>
     </div>
     </div>

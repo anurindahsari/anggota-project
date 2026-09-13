@@ -79,13 +79,14 @@ export async function getMySummary(req, res) {
   const { rows: units } = await query(
     `SELECT
        bu.id, bu.business_name, bu.unit_number,
-       mp.id AS period_id, mp.name AS period_name, mp.amount_due,
+       mp.id AS period_id, mp.name AS period_name,
+       COALESCE(bu.standard_amount_due, mp.amount_due) AS amount_due,
        COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'verified'), 0) AS amount_paid
      FROM business_units bu
      CROSS JOIN membership_periods mp
      LEFT JOIN payments p ON p.business_unit_id = bu.id AND p.period_id = mp.id
      WHERE bu.owner_id = $1
-     GROUP BY bu.id, bu.business_name, bu.unit_number, mp.id, mp.name, mp.amount_due
+     GROUP BY bu.id, bu.business_name, bu.unit_number, mp.id, mp.name, mp.amount_due, bu.standard_amount_due
      ORDER BY mp.start_date DESC, bu.business_name`,
     [req.ownerId]
   );
@@ -103,4 +104,32 @@ export async function getMySummary(req, res) {
   }));
 
   res.json({ units: result });
+}
+
+// GET /owners/me/units/:id - detail satu badan usaha (harus milik owner yang login)
+export async function getUnitDetail(req, res) {
+  const { rows } = await query(
+    `SELECT bu.*, COALESCE(SUM(p.amount) FILTER (WHERE p.status = 'verified'), 0) AS total_dibayar
+     FROM business_units bu
+     LEFT JOIN payments p ON p.business_unit_id = bu.id
+     WHERE bu.id = $1 AND bu.owner_id = $2
+     GROUP BY bu.id`,
+    [req.params.id, req.ownerId]
+  );
+  if (rows.length === 0) return res.status(404).json({ error: 'Badan usaha tidak ditemukan.' });
+  res.json({ unit: rows[0] });
+}
+
+// PATCH /owners/me/units/:id  { address, city, contactEmail }
+// Sengaja cuma alamat, kota, email yang bisa diedit mandiri - nama usaha/tipe/nomor unit tetap terkunci (data resmi).
+export async function updateUnit(req, res) {
+  const { address, city, contactEmail } = req.body;
+  const { rows } = await query('SELECT id FROM business_units WHERE id = $1 AND owner_id = $2', [req.params.id, req.ownerId]);
+  if (rows.length === 0) return res.status(404).json({ error: 'Badan usaha tidak ditemukan.' });
+
+  await query(
+    `UPDATE business_units SET address = $1, city = $2, contact_email = $3 WHERE id = $4`,
+    [address || null, city || null, contactEmail || null, req.params.id]
+  );
+  res.json({ message: 'Data badan usaha diperbarui.' });
 }
