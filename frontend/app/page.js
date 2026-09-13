@@ -41,19 +41,42 @@ export default function HomePage() {
                 alt={current.title}
                 className="hero-photo-img"
               />
+              {posts.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setIndex((i) => (i - 1 + posts.length) % posts.length)}
+                    aria-label="Sebelumnya"
+                    style={{
+                      position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)',
+                      width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                      background: 'rgba(0, 0, 0, 0.35)', color: '#ffffff', fontSize: 15,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >‹</button>
+                  <button
+                    onClick={() => setIndex((i) => (i + 1) % posts.length)}
+                    aria-label="Selanjutnya"
+                    style={{
+                      position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)',
+                      width: 28, height: 28, borderRadius: '50%', border: 'none', cursor: 'pointer',
+                      background: 'rgba(0, 0, 0, 0.35)', color: '#ffffff', fontSize: 15,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >›</button>
+                </>
+              )}
               <div style={{
                 position: 'absolute',
-                left: 14,
-                right: 14,
-                bottom: 14,
+                left: 10,
+                right: 10,
+                bottom: 10,
                 background: 'rgba(255, 255, 255, 0.82)',
-                borderRadius: 12,
-                padding: '10px 14px',
+                padding: '6px 10px',
               }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{current.title}</div>
+                <div style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 1 }}>{current.title}</div>
                 {current.caption && (
-                  <div style={{ fontSize: 12.5, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
-                    {current.caption.length > 90 ? current.caption.slice(0, 90) + '…' : current.caption}
+                  <div style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+                    {current.caption.length > 70 ? current.caption.slice(0, 70) + '…' : current.caption}
                   </div>
                 )}
               </div>
