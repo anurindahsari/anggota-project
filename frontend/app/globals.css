@@ -226,6 +226,11 @@ textarea.input { resize: vertical; font-family: inherit; }
 .row-between { display: flex; justify-content: space-between; align-items: center; }
 
 /* ===== Navbar publik (PublicNav) ===== */
+.public-nav-shell {
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(53, 95, 247, 0.12);
+}
 .public-nav {
   display: flex;
   align-items: center;
