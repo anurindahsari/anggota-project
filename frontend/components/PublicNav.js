@@ -7,6 +7,7 @@ import { getToken } from '../lib/api';
 
 const LINKS = [
   { href: '/', label: 'Beranda' },
+  { href: '/galeri', label: 'Galeri' },
   { href: '/panduan', label: 'Panduan' },
   { href: '/kontak', label: 'Kontak' },
 ];

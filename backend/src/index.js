@@ -9,6 +9,7 @@ import eventsRoutes from './routes/events.routes.js';
 import blastRoutes from './routes/blast.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import uploadsRoutes from './routes/uploads.routes.js';
+import galleryRoutes from './routes/gallery.routes.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use('/events', eventsRoutes);
 app.use('/blast', blastRoutes);
 app.use('/admin', adminRoutes);
 app.use('/uploads-api', uploadsRoutes);
+app.use('/gallery', galleryRoutes);
 app.use('/uploads', express.static(process.env.UPLOAD_DIR || './uploads'));
 
 app.get('/', (req, res) => res.json({ status: 'ok' }));
